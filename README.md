@@ -13,6 +13,7 @@ $ git checkout dev
 
 2. Install the dependencies
 ```bash
+$ npm install -g typescript ts-node nodemon
 $ npm install
 ```
 
