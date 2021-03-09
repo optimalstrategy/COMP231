@@ -15,14 +15,19 @@ import "express-async-errors";
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
 
 import Logger from "./shared/logger";
+import { isRunningUnderJest } from "./shared/functions";
 import { cookieProps, DB_URI, CORS } from "./shared/constants";
 
-mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-const mongoDB = mongoose.connection;
-mongoDB.on("error", console.error.bind(console, "Connection Error:"));
-mongoDB.once("open", () => {
-    console.log("Connected to MongoDB...");
-});
+// Avoid connecting to the database
+if (!isRunningUnderJest()) {
+    mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+    const mongoDB = mongoose.connection;
+    mongoDB.on("error", console.error.bind(console, "Connection Error:"));
+    mongoDB.once("open", () => {
+        console.log("Connected to MongoDB...");
+    });
+}
 
 import * as models from "./models";
 import BaseRouter from "./routes";

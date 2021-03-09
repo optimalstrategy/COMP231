@@ -47,4 +47,4 @@ export const DB_URI = _MONGO_USER
     ? `mongodb+srv://${_MONGO_USER}:${_MONGO_PASS}@cluster0.zj2g4.mongodb.net/${_MONGO_DB}?retryWrites=true&w=majority`
     : `mongodb://localhost/${_MONGO_DB}`;
 
-console.log(DB_URI);
+// console.log(DB_URI);
