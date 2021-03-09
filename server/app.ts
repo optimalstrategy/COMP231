@@ -32,7 +32,7 @@ if (!isRunningUnderJest()) {
 import * as models from "./models";
 import BaseRouter from "./routes";
 
-var app = express();
+const app = express();
 
 app.use(cors(CORS));
 // Allow cross-origin requests in dev environments

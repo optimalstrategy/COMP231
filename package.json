@@ -33,7 +33,7 @@
         "ignore": [
             "server/public"
         ],
-        "exec": "ts-node -r tsconfig-paths/register ./server"
+        "exec": "ts-node -r tsconfig-paths/register ./server/server.ts"
     },
     "eslintConfig": {
         "parser": "@typescript-eslint/parser",
