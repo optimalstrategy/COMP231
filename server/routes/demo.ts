@@ -9,8 +9,7 @@ router.get('/', function (req, res, next) {
 
 /* GET Return the list of developers working on the project. */
 router.get('/developers', async (req: Request, res: Response, next) => {
-    return res.json({ "developers": ["George"] }).status(200);
+    return res.json({ "developers": ["George", "Hung"] }).status(200);
 });
-
 
 export default router;
