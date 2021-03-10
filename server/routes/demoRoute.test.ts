@@ -14,4 +14,14 @@ describe('A sample test demonstrating how to test APIs', () => {
         expect(result.text.startsWith("<!DOCTYPE html>")).toBeTruthy();
         done();
     });
+
+    it('Request / developers should return developer names', async (done) => {
+        const result = await request(app).get('/developers').send();
+
+        expect(result.status).toBe(200);
+        const developers: String[] = result.body.developers;
+        expect(developers.find((n) => n == "Hung")).toEqual("Hung");
+        expect(developers).toEqual(["Hung"]);
+        done();
+    });
 });
