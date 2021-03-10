@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
 });
 
 /* GET Return the list of developers working on the project. */
-router.get('/developer', async (req: Request, res: Response, next) => {
+router.get('/developers', async (req: Request, res: Response, next) => {
     return res.json({ "developers": ["George"] }).status(200);
 });
 
