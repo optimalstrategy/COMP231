@@ -15,7 +15,7 @@ describe('A sample test demonstrating how to test APIs', () => {
         done();
     });
     it('Request /developers should return developer names', async (done) => {
-        const result = await request(app).get('/developer').send();
+        const result = await request(app).get('/developers').send();
 
         expect(result.status).toBe(200);
         const developers: String[] = result.body.developers;
