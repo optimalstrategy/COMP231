@@ -14,4 +14,12 @@ describe('A sample test demonstrating how to test APIs', () => {
         expect(result.text.startsWith("<!DOCTYPE html>")).toBeTruthy();
         done();
     });
+
+    it('Request /developer should return HTTP 200 OK and length should be 1', async (done) => {
+        const result = await request(app).get('/developer').send();
+
+        expect(result.status).toBe(200);
+        expect(result.body.developers).toHaveLength(1);
+        done();
+    });
 });
