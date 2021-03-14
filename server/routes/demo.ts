@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 
 const router = Router();
 
@@ -7,5 +7,9 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+
+router.get('/developer', function(req:Request, res:Response, next) {
+  res.json({"developers":["faraz"]}).status(200)
+});
 
 export default router;
