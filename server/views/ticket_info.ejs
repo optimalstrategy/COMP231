@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--Submit ticket form -->
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>Help Desk Ticket Form</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body>
+    <!--form -->
+    <form id="ticketForm">
+      <fieldset style="width: auto">
+        <legend>Ticket Description</legend>
+
+        <!--Ticket text area -->
+        <textarea
+          id="textArea"
+          rows="20"
+          cols="80"
+          placeholder="Please enter your message here..."
+          autofocus="autofocus"
+          required
+        ></textarea>
+
+        <p></p>
+
+        <!--Scope textfield -->
+        <input
+          type="text"
+          id="scopeText"
+          size="50"
+          placeholder="Enter scope of the problem..."
+          required
+        />
+
+        <p></p>
+
+        <!--Submit Button -->
+        <input type="submit" id="submitBtn" value="Submit" />
+      </fieldset>
+    </form>
+  </body>
+</html>
