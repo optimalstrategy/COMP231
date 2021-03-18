@@ -12,13 +12,16 @@ import mongoose from "mongoose";
 import cors from "cors";
 import StatusCodes from "http-status-codes";
 import "express-async-errors";
+
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
 
 import Logger from "./shared/logger";
 import { isRunningUnderJest } from "./shared/functions";
 import { cookieProps, DB_URI, CORS } from "./shared/constants";
+import * as models from "./models";
+import BaseRouter from "./routes";
 
-// Avoid connecting to the database
+// Avoid connecting to the database and rabbitmq when testing
 if (!isRunningUnderJest()) {
     mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -28,9 +31,6 @@ if (!isRunningUnderJest()) {
         console.log("Connected to MongoDB...");
     });
 }
-
-import * as models from "./models";
-import BaseRouter from "./routes";
 
 const app = express();
 
