@@ -1,6 +1,9 @@
 # Software Development Project
 
 ## Setup
+0. Install [MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/) and [RabbitMQ](https://www.rabbitmq.com/install-windows.html). 
+   Make sure that both programs are configured and running.
+
 1. Clone the repo:
 ```bash
 $ git clone https://github.com/optimalstrategy/COMP231
@@ -16,8 +19,6 @@ $ git checkout dev
 $ npm install -g typescript ts-node nodemon
 $ npm install
 ```
-
-After this step, you need to have MongoDB installed and running to proceed with the setup.
 
 3. Run the tests. You should see something like this:
 ```bash
