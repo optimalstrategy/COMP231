@@ -121,3 +121,4 @@ ml/data
 production.env
 catboost_info
 __pycache__
+.idea
