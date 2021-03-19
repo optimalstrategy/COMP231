@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Router, Request, Response } from 'express';
 import { TaskQueue } from '../shared/conn';
 import { Message } from '@droidsolutions-oss/amqp-ts';
-import { REPLY_TO_QUEUE } from 'server/shared/constants';
+import { REPLY_TO_QUEUE } from '../shared/constants';
 import { ITicketSubmission } from './interfaces';
 
 const router = Router();

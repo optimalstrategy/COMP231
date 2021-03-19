@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { TaskConnection, TaskQueue } from "./conn";
 
 beforeEach(async (done) => {
     async function clearDB() {
@@ -26,6 +27,8 @@ afterEach(function (done) {
     return done();
 });
 
-afterAll(done => {
+afterAll(async done => {
+    await TaskQueue.close();
+    await TaskConnection.close();
     return done();
 });
