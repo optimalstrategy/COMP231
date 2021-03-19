@@ -19,7 +19,7 @@ describe('A sample test demonstrating how to test APIs', () => {
 
         expect(result.status).toBe(200);
         const developers: String[] = result.body.developers;
-        expect(developers).toEqual(["George", "Hung"]);
+        expect(developers).toEqual(["George", "Hung", "Ibrahim"]);
         done();
     })
 });
