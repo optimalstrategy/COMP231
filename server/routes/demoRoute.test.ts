@@ -1,6 +1,7 @@
-import request from "supertest";
-import { setTestDb } from "../shared/functions";
-import app from "../app";
+import request from 'supertest';
+import { setTestDb } from '../shared/functions';
+import app from '../app';
+
 
 // Isn't needed for this test but required for all tests that interact with the database.
 // The name of the database must be unique.
@@ -19,7 +20,7 @@ describe("A sample test demonstrating how to test APIs", () => {
 
         expect(result.status).toBe(200);
         const developers: String[] = result.body.developers;
-        expect(developers).toEqual(["George", "Hung", "Ibrahim", "Dmitriy"]);
+        expect(developers).toEqual(["George", "Hung", "Ibrahim", "Dmitriy", "Faraz"]);
         done();
     });
 });
