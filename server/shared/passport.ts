@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import passport from "passport";
 import passportLocal from "passport-local";
 import bcrypt from 'bcryptjs'
@@ -8,14 +9,17 @@ const LocalStrategy = passportLocal.Strategy;
 passport.serializeUser<any, any>((req, user, done) => {
     done(undefined, user);
 });
-passport.deserializeUser((id, done) => {
-    UserModel.findById(id, (err: NativeError, user: IUserDocument) => {
-        done(err, user.id);
-    });
+passport.deserializeUser(async (id: any, done: any) => {
+    try {
+        const user = await UserModel.findById(id);
+        done(undefined, user?._id);
+    } catch (e) {
+        done(e)
+    }
 });
-passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-    UserModel.findOne({ email: email.toLowerCase() }, (err: NativeError, user: IUserDocument) => {
-        if (err) { return done(err); }
+passport.use(new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+    try {
+        const user = await UserModel.findOne({ email: email.toLowerCase() });
         if (!user) {
             return done(undefined, false, { message: `Email ${email} not found.` });
         }
@@ -26,5 +30,7 @@ passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, don
             }
             return done(undefined, false, { message: "Invalid email or password." });
         });
-    });
+    } catch (e) {
+        return done(e);
+    }
 }));

@@ -1,18 +1,25 @@
 import { Router } from 'express';
 import { TicketModel } from "../models/tickets/ticket.model";
-import { ITicket } from "../models/tickets/ticket.types";
 
 const router = Router();
 
 router.post('/', async (req, res, next) => {
     try {
         const createTicket = await TicketModel.create(req.body);
-        res.status(201).json(createTicket)
+        return res.status(201).json(createTicket)
     }catch (e) {
         res.status(400).json(e)
     }
 
-})
+});
+router.put('/:id', async (req, res, next) => {
+    try {
+        const updatedTicket = await TicketModel.findByIdAndUpdate(req.params.id, req.body);
+        res.status(200).json(updatedTicket)
+    } catch (e) {
+        res.status(400).json(e)
+    }
+});
 router.get('/:id', async (req, res, next) =>{
     try {
         const ticket = await TicketModel.findById(req.params.id);
