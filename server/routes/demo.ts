@@ -2,9 +2,14 @@ import { Router, Request, Response, NextFunction } from "express";
 
 const router = Router();
 
-/// [GET] home page.
+/// [GET] Home page.
 router.get("/", function (_req: Request, res: Response, _: NextFunction) {
-    res.render("index", { title: "Express" });
+    res.render("index");
+});
+
+/// [GET] home page.
+router.get("/submit", function (_req: Request, res: Response, _: NextFunction) {
+    res.render("submit");
 });
 
 /// [GET] Return the list of developers working on the project.
