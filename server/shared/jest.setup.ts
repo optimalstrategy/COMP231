@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { TaskConnection, TaskQueue } from "./conn";
 
-beforeEach(async (done) => {
+beforeAll(async (done) => {
     async function clearDB() {
         for (var i in mongoose.connection.collections) {
             await mongoose.connection.collections[i].deleteMany({});
@@ -22,12 +22,8 @@ beforeEach(async (done) => {
     );
 });
 
-afterEach(function (done) {
+afterAll(async (done) => {
     mongoose.disconnect();
-    return done();
-});
-
-afterAll(async done => {
     await TaskQueue.close();
     await TaskConnection.close();
     return done();
