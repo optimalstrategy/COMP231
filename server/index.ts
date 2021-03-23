@@ -1,1 +1,3 @@
-// Required to make /server a module
+/*
+ *   Does nothing. Required to make `/server` a module.
+ */

@@ -116,5 +116,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+ml/data
 .vscode
 production.env
+catboost_info
+__pycache__
+.idea

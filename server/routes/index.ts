@@ -1,14 +1,10 @@
 import { Router } from 'express';
-import UserRouter from './users';
 import DemoRouter from './demo';
-import TicketRouter from './ticket';
-
+import APIRouter from './api';
 
 const router = Router();
 
-router.use('/users', UserRouter);
-router.use('/tickets', TicketRouter);
-router.get('/', (req, res, next) => {
-    res.render('index')
-})
+router.use('/', DemoRouter);
+router.use('/api/v1', APIRouter);
+
 export default router;
