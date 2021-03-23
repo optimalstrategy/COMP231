@@ -1,3 +1,5 @@
+import { ITicket } from "server/models/tickets/ticket.types";
+
 /// The interface that the KeyBERT parameters must follow.
 export interface IBertSettings {
     /// The number of keywords to extract. Defaults to 5.
@@ -48,17 +50,29 @@ export interface IKeywordSettings {
     parameters?: IBertSettings | SummaSettings | YakeSettings;
 }
 
+/// The settings to use while processing the tickets.
+export interface ISubmissionSettings {
+    /// THe settings to use for keyword prediction.
+    keywords?: IKeywordSettings
+}
+
 /// The interface of a ticket submission request.
 export interface ITicketSubmission {
     /// The body of the ticket to process. Must be present.
-    body: string;
+    description: string;
     /// The headline or general scope of the ticket. May be empty.
     headline?: string;
     /// The user who submitted the ticket.
     user?: string;
     /// The settings to use while processing the tickets.
-    settings?: {
-        /// THe settings to use for keyword prediction.
-        keywords?: IKeywordSettings
-    }
+    settings?: ISubmissionSettings
+}
+
+export interface ITicketUpdate {
+    /// The ticket fields to update.
+    ticket: ITicket,
+    /// Whether the ticket should be processed again.
+    requiresProcessing?: boolean,
+    /// The settings to use to for processing.
+    settings?: ISubmissionSettings
 }
