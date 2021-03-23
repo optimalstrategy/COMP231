@@ -14,10 +14,16 @@ import StatusCodes from "http-status-codes";
 import "express-async-errors";
 
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
+import expressEjsLayout from 'express-ejs-layouts';
+import session from 'express-session'
+import passport from 'passport';
 
 import Logger from "./shared/logger";
+import * as passportConfig from "./shared/passport";
+
 import { isRunningUnderJest } from "./shared/functions";
 import { cookieProps, DB_URI, CORS } from "./shared/constants";
+
 import * as models from "./models";
 import BaseRouter from "./routes";
 
@@ -33,7 +39,8 @@ if (!isRunningUnderJest()) {
 }
 
 const app = express();
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cors(CORS));
 // Allow cross-origin requests in dev environments
 if (process.env.NODE_ENV !== "production") {
@@ -46,7 +53,12 @@ if (process.env.NODE_ENV !== "production") {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use(expressEjsLayout);
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === "development") {
@@ -78,9 +90,9 @@ app.use(async (req: Request, res, next) => {
 
 // error handler
 app.use(async (err: any, req: Request, res: Response, _next: NextFunction) => {
+    console.log(err);
+    Logger.error(err);
     if (req.path.startsWith("/api")) {
-        Logger.error(err);
-
         let statusCode: number;
         let error: string;
         try {
