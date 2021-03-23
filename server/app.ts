@@ -90,9 +90,9 @@ app.use(async (req: Request, res, next) => {
 
 // error handler
 app.use(async (err: any, req: Request, res: Response, _next: NextFunction) => {
+    console.log(err);
+    Logger.error(err);
     if (req.path.startsWith("/api")) {
-        Logger.error(err);
-
         let statusCode: number;
         let error: string;
         try {

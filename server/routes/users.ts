@@ -27,8 +27,8 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 
     const salt = await bcrypt.genSalt(12);
-    password = await bcrypt.hash(password, salt);
-    user = await UserModel.create({ email, password })
+    const pwdHash = await bcrypt.hash(password, salt);
+    user = await UserModel.create({ email, password: pwdHash })
     return res.status(StatusCodes.CREATED).json(user);
 });
 
@@ -36,6 +36,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
 /// [POST] /api/v1/users/login - Attempt to login with the given email and password.
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    console.log(JSON.stringify(req.body, null, 4));
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',

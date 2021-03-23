@@ -41,7 +41,7 @@ export const CORS = {
 
 const _MONGO_USER = process.env.MONGO_USERNAME;
 const _MONGO_PASS = process.env.MONGO_PASSWORD;
-const _MONGO_DB = process.env.MONGO_DATABASE || 'project_db';
+const _MONGO_DB = process.env.MONGO_DATABASE || 'comp231_db';
 
 export const DB_URI = _MONGO_USER
     ? `mongodb+srv://${_MONGO_USER}:${_MONGO_PASS}@cluster0.zj2g4.mongodb.net/${_MONGO_DB}?retryWrites=true&w=majority`

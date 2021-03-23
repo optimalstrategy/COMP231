@@ -19,7 +19,7 @@ passport.deserializeUser(async (id: string, done: any) => {
     done(null, user?._id);
 });
 
-passport.use(new LocalStrategy({ usernameField: "email" }, async (email: string, password: string, done) => {
+passport.use(new LocalStrategy({ usernameField: "email", passwordField: 'password', }, async (email: string, password: string, done) => {
     const user = await UserModel.findOne({ email: email.toLowerCase() });
     if (!user) {
         return done(null, false, { message: `Email ${email} not found.` });
