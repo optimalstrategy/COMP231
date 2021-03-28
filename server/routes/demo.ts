@@ -7,9 +7,19 @@ router.get("/", function (_req: Request, res: Response, _: NextFunction) {
     res.render("index");
 });
 
-/// [GET] home page.
+/// [GET] Ticket submission page.
 router.get("/submit", function (_req: Request, res: Response, _: NextFunction) {
     res.render("submit");
+});
+
+/// [GET] A temporary page with similar tickets.
+router.get("/similar", function (_req: Request, res: Response, _: NextFunction) {
+    res.render("similar");
+});
+
+/// [GET] A temporary page with similar tickets.
+router.get("/keywords", function (_req: Request, res: Response, _: NextFunction) {
+    res.render("keywords");
 });
 
 /// [GET] Return the list of developers working on the project.
