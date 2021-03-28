@@ -1,0 +1,33 @@
+@import url(../fonts/fonts.css);
+
+.container {
+    width: 30%;
+    margin: 50px auto;
+    text-align: center;
+    padding: 10px 10px;
+    width: 30vw;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15), 0 5px 5px 0 rgba(0, 0, 0, 0.15);
+    letter-spacing: 1px
+};
+
+.form-body {
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.text-input {
+    appearance: none;
+    width: 95%;
+    height: 35px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background: #e8ebed;
+    color: #576366;
+    font-size: 14px;
+}
