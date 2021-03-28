@@ -1,28 +1,29 @@
 <%var title = 'Login'%>
 
 <link rel="stylesheet" type="text/css" href="./css/register.css">
-
-<div class="container">
-    <h1>Register</h1>
-    <form action="/api/v1/users/register" method="POST">
-        <div>
-            <input type="name" name="name" class="text-input" placeholder="Enter Name" value="<%= typeof name != 'undefined' ? name : '' %>" />
-        </div>
-        <div>
-            <input type="email" name="email" class="text-input" placeholder="Enter Email"
-                value="<%= typeof email != 'undefined' ? email : '' %>" />
-        </div>
-        <div>
-            <input type="password" name="password" class="text-input" placeholder="Create Password"
-                value="<%= typeof password != 'undefined' ? password : '' %>" />
-        </div>
-        <div>
-            <input type="password" name="password2" class="text-input" placeholder="Confirm Password"
-                value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">
-            Register
-        </button>
-    </form>
-    <p>Have An Account? <a href="/login">Login</a></p>
-</div>
+<main>
+    <div class="container">
+        <h1>Register</h1>
+        <form action="/api/v1/users/register" method="POST">
+            <div>
+                <input type="name" name="name" class="text-input" placeholder="Enter Name" value="<%= typeof name != 'undefined' ? name : '' %>" />
+            </div>
+            <div>
+                <input type="email" name="email" class="text-input" placeholder="Enter Email"
+                    value="<%= typeof email != 'undefined' ? email : '' %>" />
+            </div>
+            <div>
+                <input type="password" name="password" class="text-input" placeholder="Create Password"
+                    value="<%= typeof password != 'undefined' ? password : '' %>" />
+            </div>
+            <div>
+                <input type="password" name="password2" class="text-input" placeholder="Confirm Password"
+                    value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+                Register
+            </button>
+        </form>
+        <p>Have An Account? <a href="/login">Login</a></p>
+    </div>
+<main>

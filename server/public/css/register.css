@@ -30,4 +30,9 @@
     background: #e8ebed;
     color: #576366;
     font-size: 14px;
+    margin-top: 5px;
 }
+
+button{
+    margin-top: 20px
+};
