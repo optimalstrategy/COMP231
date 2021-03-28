@@ -12,6 +12,8 @@ export interface IBertSettings {
     /// The diversity of the extracted keyword as a number between 0 and 1.0. Only works if `use_mmr` is true.
     /// Defaults to 0.7.
     diversity?: number,
+    /// The words to exclude from the document before predicting keywords.
+    stop_words: string[] | "english";
 }
 
 /// The interface that the Summa parameters must follow.
