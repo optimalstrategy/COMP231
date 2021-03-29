@@ -4,7 +4,22 @@ html,
 body {
     margin: 0;
     box-sizing: border-box;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
+}
+
+main {
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: #c0392b;
+    font-family: var(--Lexend);
+    color: white;
+    letter-spacing: 1px;
 }
 
 :root {
@@ -25,6 +40,20 @@ body {
     --Josefin: 'Josefin', cursive;
     --Lexend: 'Lexend', cursive;
     --Livvic: 'Livvic', cursive;
+}
+
+.text-input {
+    appearance: none;
+    width: 95%;
+    height: 35px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background: #e8ebed;
+    color: #576366;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 /*Global Classes*/
@@ -58,14 +87,32 @@ h3 {
     font-size: 1.3rem;
 }
 
-button.btn {
-    border: none;
+.button {
+    border: 1px none;
     border-radius: 2rem;
     padding: 1rem 3rem;
     font-size: 1rem;
     font-family: var(--Livvic);
-    cursor: pointer;
+    background: var(--sky);
+    color: var(--midnight);
+    /* padding: 1rem 3rem;
+    font-size: 1rem;
+
+    cursor: pointer; */
 }
+
+.button:hover {
+    border: 1px solid var(--white);
+}
+
+/* .btn {
+} */
+
+/* .btn:hover { */
+/* background: red; */
+/* border: 1px solid var(--white); */
+/* color: white; */
+/* } */
 
 span {
     font-family: var(--Abel);
@@ -165,11 +212,6 @@ p {
     color: #a1c4cf;
 }
 
-/*Navbar*/
-
-/* Main Content */
-
-/* Site Title */
 
 main .site-title {
     background: url('../assets/support.jpg');
@@ -190,20 +232,6 @@ h3 {
     margin: .3rem;
 }
 
-main .site-title .btn {
-    margin: 1.8rem;
-    background: var(--sky);
-}
-
-main .site-title .btn:hover {
-    background: transparent;
-    border: 1px solid var(--white);
-    color: white;
-}
-
-/* --x-- Site Title --x-- */
-
-/* ---- Footer ---- */
 
 .footer {
     height: 100%;
@@ -279,10 +307,6 @@ main .site-title .btn:hover {
     cursor: pointer;
 }
 
-/* --x-- Footer --x-- */
-
-/* Viewport less than or equal to 1130px*/
-
 @media only screen and (max-width: 1130px) {
     .site-content .post-content>.post-image .post-info {
         left: 2rem !important;
@@ -299,9 +323,6 @@ main .site-title .btn:hover {
     }
 }
 
-/* Viewport less than or equal to 1130px*/
-
-/* Viewport less than or equal to 750px*/
 
 @media only screen and (max-width: 750px) {
 
@@ -323,9 +344,6 @@ main .site-title .btn:hover {
     }
 }
 
-/* Viewport less than or equal to 750px*/
-
-/* Viewport less than or equal to 520px*/
 
 @media only screen and (max-width: 520px) {
     main .blog {
@@ -350,4 +368,11 @@ main .site-title .btn:hover {
     }
 }
 
-/* Viewport less than or equal to 520px*/
+
+.modal-header-danger {
+    background-color: #dc3545;
+}
+
+.modal-title-danger {
+    color: white !important;
+}

@@ -1,20 +1,9 @@
 @import url(../fonts/fonts.css);
 
-main {
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background: #c0392b;
-    font-family: var(--Lexend);
-    color: white;
-    letter-spacing: 1px;
-}
 
 .card-form {
     width: 30vw;
     border-radius: 10px;
-    background: white;
     box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
 }
 
@@ -43,18 +32,6 @@ main {
     padding: 10px;
 }
 
-.text-input {
-    appearance: none;
-    width: 95%;
-    height: 35px;
-    padding: 5px 15px;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    background: #e8ebed;
-    color: #576366;
-    font-size: 14px;
-}
 
 .rule {
     height: 2px;
@@ -68,7 +45,6 @@ main {
 
 }
 
-
-span {
-    margin-left: 8px;
+.highlight {
+    text-decoration: underline wavy blue;
 }

@@ -1,29 +1,22 @@
-<%var title = 'Login'%>
+<%var title = 'Sign Up'%>
 
 <link rel="stylesheet" type="text/css" href="./css/register.css">
-<main>
-    <div class="container">
-        <h1>Register</h1>
-        <form action="/api/v1/users/register" method="POST">
-            <div>
-                <input type="name" name="name" class="text-input" placeholder="Enter Name" value="<%= typeof name != 'undefined' ? name : '' %>" />
-            </div>
-            <div>
-                <input type="email" name="email" class="text-input" placeholder="Enter Email"
-                    value="<%= typeof email != 'undefined' ? email : '' %>" />
-            </div>
-            <div>
-                <input type="password" name="password" class="text-input" placeholder="Create Password"
-                    value="<%= typeof password != 'undefined' ? password : '' %>" />
-            </div>
-            <div>
-                <input type="password" name="password2" class="text-input" placeholder="Confirm Password"
-                    value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">
+<script type="text/javascript" src="./js/register.js"></script>
+<main class="container">
+    <div class="card text-center">
+        <h1 class="card-header">Sign Up</h1>
+        <form id="signup-form" action="/api/v1/users/register" method="POST" class="card-body">
+            <input id="name" name="name" class="text-input" placeholder="Enter Name" required />
+            <input id="email" type="email" name="email" class="text-input" placeholder="Enter Email" required />
+            <input id="password" type="password" name="password" class="text-input" placeholder="Create Password"
+                required />
+            <input id="confirmation" type="password" name="confirmation" class="text-input"
+                placeholder="Confirm Password" required />
+            <button id="btnSubmit" type="button" class="btn btn-primary btn-block"
+                style="margin-top: 10px; width: 95%;">
                 Register
             </button>
         </form>
-        <p>Have An Account? <a href="/login">Login</a></p>
+        <p>Already have an account? <a class="btn btn-sm btn-primary" href="/login">Login</a></p>
     </div>
-<main>
+</main>
