@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title>Support Ticket Prioritization</title> -->
 
     <link rel="stylesheet" type="text/css" href="./css/owl.carousel.min.css">
     <link rel="stylesheet" type="text/css" href="./css/owl.theme.default.min.css">
@@ -17,13 +16,14 @@
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <%- style %>
 </head>
 
 <body>
     <nav class="nav">
         <div class="nav-menu flex-row">
             <div class="nav-brand">
-                <a href="/" class="text-gray">Ticket Creator</a>
+                <a href="/" class="text-gray">STP</a>
             </div>
             <div class="toggle-collapse">
                 <div class="toggle-icons">
@@ -54,6 +54,25 @@
 
     <%- body %>
 
+    <!-- Error modal -->
+    <div class="modal fade" id="error-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-danger">
+                    <h5 class="modal-title modal-title-danger" id="error-title">Modal title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="error-message">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <div class="about-us">
@@ -75,6 +94,7 @@
 
     <script src="./js/jquery.min.js"></script>
     <script src="./js/main.js"></script>
+    <%- script %>
 </body>
 
 </html>

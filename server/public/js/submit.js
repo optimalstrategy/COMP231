@@ -14,12 +14,6 @@ let SETTINGS = {
 };
 const sleep = m => new Promise(r => setTimeout(r, m))
 
-function showError(title, message) {
-    $("#error-title").text(title);
-    $("#error-message").text(message);
-    $("#error-modal").modal('show');
-}
-
 function updateUI(data) {
     toggleSpinner('off');
 
@@ -75,7 +69,6 @@ function updateUI(data) {
     // Setup the hover callbacks
     for (const id of Object.values(kw2id)) {
         const words = $(`[name='${id}']`);
-        console.log(words);
         for (const word of words) {
             const selector = `#${id}`;
             hoverKeywordGroup(selector, word, words);
@@ -195,7 +188,28 @@ function toggleSpinner(toggle) {
     }
 }
 
+function onSignupRedirect() {
+    // Display an alert stating that the registration was successful.
+    $("main").prepend(`<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Successfully registered!</strong> Use the form bellow to submit a ticket for processing.
+    <button type="button" class="btn-close close" data-dismiss="alert" aria-label="Close"
+        onclick="$('.alert').alert('close')">
+    </button>
+</div>`);
+    // Close the alert after 10 seconds.
+    setTimeout((_) => {
+        $('.alert').alert("close");
+    }, 10000);
+
+    // Remove the signup parameter from the URL so refreshing the page
+    // doesn't trigger the alert again.
+    window.history.replaceState(null, null, window.location.pathname);
+}
+
 $(document).ready(() => {
+    if ((new URLSearchParams(window.location.search).get("signup") === '1')) {
+        onSignupRedirect();
+    }
     $("body").tooltip({
         selector: '[data-toggle=tooltip]'
     });

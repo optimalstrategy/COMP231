@@ -1,13 +1,5 @@
 @import url(../fonts/fonts.css);
 
-main {
-    /* display: flex; */
-    height: 100vh;
-    /* justify-content: center;
-    align-items: center;
-    font-family: var(--Lexend);
-    letter-spacing: 1px; */
-}
 
 .card-form {
     width: 30vw;
@@ -40,18 +32,6 @@ main {
     padding: 10px;
 }
 
-.text-input {
-    appearance: none;
-    width: 95%;
-    height: 35px;
-    padding: 5px 15px;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    background: #e8ebed;
-    color: #576366;
-    font-size: 14px;
-}
 
 .rule {
     height: 2px;
@@ -65,19 +45,6 @@ main {
 
 }
 
-span {
-    margin-left: 8px;
-}
-
 .highlight {
     text-decoration: underline wavy blue;
-}
-
-.modal-header-danger {
-    background-color: #dc3545;
-    /* //color: dc3545; */
-}
-
-.modal-title-danger {
-    color: white !important;
 }

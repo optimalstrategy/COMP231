@@ -4,7 +4,11 @@ html,
 body {
     margin: 0;
     box-sizing: border-box;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
+}
+
+main {
+    height: 100vh;
 }
 
 .main {
@@ -36,6 +40,20 @@ body {
     --Josefin: 'Josefin', cursive;
     --Lexend: 'Lexend', cursive;
     --Livvic: 'Livvic', cursive;
+}
+
+.text-input {
+    appearance: none;
+    width: 95%;
+    height: 35px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background: #e8ebed;
+    color: #576366;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 /*Global Classes*/
@@ -348,4 +366,13 @@ h3 {
     nav .toggle-collapse {
         width: 80% !important;
     }
+}
+
+
+.modal-header-danger {
+    background-color: #dc3545;
+}
+
+.modal-title-danger {
+    color: white !important;
 }
