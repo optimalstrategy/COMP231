@@ -47,15 +47,11 @@ function updateUI(data) {
         // Since keywords can be composite, we need to wrap each word individually
         const words = kw.split(" ");
 
-        // The idea is to loop through every word in a keyword, find it in the description, and highlight it.
-        // Before moving onto the next iteration, we save the position of the keyword to start searching from it in the next iteration.
-        // This works because all words in a keyword are guaranteed to be in order.
+        // TODO: do something about same words preceding the keyword cluster
         let prev_index = 0;
         for (const word of words) {
-            let index = desc.toLowerCase().substring(prev_index).indexOf(word);
+            let index = desc.toLowerCase().indexOf(word, prev_index);
             if (index === -1) continue;
-
-            index += prev_index;
 
             const keyword = desc.substring(index, index + word.length);
             const highlight = `<strong name="${kw2id[kw]}">${keyword}</strong>`;
@@ -218,9 +214,10 @@ $(document).ready(() => {
         toggleSpinner('on');
         submit($('#ticketForm')).then(
             () => toggleSubmitButton('on'),
-            () => {
+            (e) => {
                 toggleSpinner('both');
                 toggleSubmitButton('on');
+                throw e;
             }
         );
     });
