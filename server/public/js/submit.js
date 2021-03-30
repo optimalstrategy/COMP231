@@ -8,7 +8,7 @@ let SETTINGS = {
             keyphrase_ngram_range: [1, 3],
             use_mmr: true,
             diversity: 0.7,
-            stop_words: [],
+            // stop_words: [],
         }
     }
 };
@@ -44,10 +44,20 @@ function updateUI(data) {
     // Wrap all keywords in <strong name="keyword-N" /> tags.
     let desc = data.description;
     for (const kw of Object.keys(kw2id)) {
-        // Since keywords can be composite, we need to wrap each word individually
-        const words = kw.split(" ");
+        // Try to find the keyphrase as a full match first. This will not work if the keyphrase is composite
+        // (i.e. the "key" words in the phrase do not follow one another immediately).
+        const index = desc.toLowerCase().indexOf(kw);
+        if (index !== -1) {
+            const keyword = desc.substring(index, index + kw.length);
+            const highlight = `<strong name="${kw2id[kw]}">${keyword}</strong>`;
+            desc = desc.substring(0, index) + highlight + desc.substring(index + kw.length);
+            continue;
+        }
+
 
         // TODO: do something about same words preceding the keyword cluster
+        // The if above has failed, meaning that this must be a composite keyphrase. 
+        const words = kw.split(" ");
         let prev_index = 0;
         for (let i = 0; i < words.length; ++i) {
             const word = words[i];
