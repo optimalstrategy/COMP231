@@ -3,15 +3,15 @@
 <link rel="stylesheet" type="text/css" href="./css/submit.css">
 <script type="text/javascript" src="./js/submit.js"></script>
 
-<main class="container" rol="main">
+<main class="container justify-content-center" style="min-width: 80vw;">
     <!-- Ticket Submission widget -->
-    <div class="card">
+    <div class="card text-center align-item-center" style="margin-top: 5%; min-width: 80vw;">
         <form id="ticketForm">
             <div class="card-header">Create Ticket</div>
             <div class="card-body">
                 <input class="text-input" type="text" name="headline" class="row" placeholder="Enter a headline" />
                 <textarea name="description" class="text-input" rows="20" style="height: auto; margin-top: 5px;"
-                    id="textArea" class="row" placeholder="Please enter your message here..." autofocus="autofocus"
+                    id="textArea" class="row" placeholder="Enter the description..." autofocus="autofocus"
                     required></textarea>
             </div>
             <div class="card-footer">
@@ -21,15 +21,15 @@
         </form>
     </div>
 
-    <!-- Ticket Info widget -->
-    <div id="spinner" class="d-flex justify-content-center visually-hidden" style="margin-top: 10px;">
-        <div class="spinner-border text-success" role="status">
+    <div id="spinner" class="visually-hidden justif-content-center" style="margin-top: 10px; margin-left: 50%;">
+        <div class=" spinner-border text-success" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
+    <!-- Ticket Info widget -->
     <!-- NOTE: remove visually-hidden during development -->
-    <div id="ticket-view" class="card visually-hidden" style="margin-top: 5px;">
+    <div id="ticket-view" class="card visually-hidden" style="margin-top: 5px; margin-bottom: 5vh; min-width: 80vw;">
         <h4 class="card-header">Ticket Info</h4>
         <div class="card-body">
             <p class="card-text">ID: <span id="ticket-id"></span></p>
@@ -52,4 +52,6 @@
             </div>
         </div>
     </div>
+
+    <div class="push"></div>
 </main>
