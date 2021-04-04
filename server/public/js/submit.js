@@ -8,7 +8,7 @@ let SETTINGS = {
             keyphrase_ngram_range: [1, 3],
             use_mmr: true,
             diversity: 0.7,
-            stop_words: [],
+            // stop_words: [],
         }
     }
 };
@@ -44,18 +44,55 @@ function updateUI(data) {
     // Wrap all keywords in <strong name="keyword-N" /> tags.
     let desc = data.description;
     for (const kw of Object.keys(kw2id)) {
-        // Since keywords can be composite, we need to wrap each word individually
+        // Try to find the keyphrase as a full match first. This will not work if the keyphrase is composite
+        // (i.e. the "key" words in the phrase do not follow one another immediately).
+        const index = desc.toLowerCase().indexOf(kw);
+        if (index !== -1) {
+            const keyword = desc.substring(index, index + kw.length);
+            const highlight = `<strong name="${kw2id[kw]}">${keyword}</strong>`;
+            desc = desc.substring(0, index) + highlight + desc.substring(index + kw.length);
+            continue;
+        }
+
+
+        // TODO: do something about same words preceding the keyword cluster
+        // The if above has failed, meaning that this must be a composite keyphrase. 
         const words = kw.split(" ");
-
-        // The idea is to loop through every word in a keyword, find it in the description, and highlight it.
-        // Before moving onto the next iteration, we save the position of the keyword to start searching from it in the next iteration.
-        // This works because all words in a keyword are guaranteed to be in order.
         let prev_index = 0;
-        for (const word of words) {
-            let index = desc.toLowerCase().substring(prev_index).indexOf(word);
-            if (index === -1) continue;
+        for (let i = 0; i < words.length; ++i) {
+            const word = words[i];
+            const lower = desc.toLowerCase();
+            let index = lower.indexOf(word, prev_index);
 
-            index += prev_index;
+            // If this is the first word, look for the next word, and then try to search *backwards*
+            // from the next word, for the first word.
+            //
+            // Consider the following text and the keyword list (brown, fox, jumps):
+            //    0   1   2   3   4   5     6   7   8     9  10    11  12    13   14  15   16
+            //   the red fox and the brown dog sit while the brown fox jumps over the lazy monkey
+            //
+            // If the take the first occurrence of brown, we'll get (brown, 5), (fox, 11), and (jumps, 12), 
+            // which is not correct:
+            //
+            //    0   1   2   3   4   5     6   7   8     9  10    11  12    13   14  15   16
+            //   the red fox and the brown dog sit while the brown fox jumps over the lazy monkey
+            //                       -----                         --- -----
+            //
+            // However, if we apply the hack and search for the first occurrence of "fox" after the first occurrence of "brown" (5),
+            // we'll get (fox, 11). If we now search backwards for "brown", we'll get (brown, 10) instead of (brown, 6), which is exactly what we want.
+            //
+            //    0   1   2   3   4   5     6   7   8     9  10    11  12    13   14  15   16
+            //   the red fox and the brown dog sit while the brown fox jumps over the lazy monkey
+            //                                               ----- --- -----
+            //                                               ^-----<<< search backwards
+            //
+            // This hack relies on the chance that the second word doesn't occur more than once after the first word, or, in other words,
+            // on the observation that the words in a keyphrase tend to be clustered together.
+            if (i == 0 && words.length > 1 && index != -1) {
+                const nextWord = lower.indexOf(words[i + 1], index);
+                if (nextWord !== -1) index = lower.lastIndexOf(word, nextWord);
+            }
+            if (index === -1) continue;
 
             const keyword = desc.substring(index, index + word.length);
             const highlight = `<strong name="${kw2id[kw]}">${keyword}</strong>`;
@@ -218,9 +255,10 @@ $(document).ready(() => {
         toggleSpinner('on');
         submit($('#ticketForm')).then(
             () => toggleSubmitButton('on'),
-            () => {
+            (e) => {
                 toggleSpinner('both');
                 toggleSubmitButton('on');
+                throw e;
             }
         );
     });
