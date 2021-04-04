@@ -1,16 +1,8 @@
 @import url(../fonts/fonts.css);
 
-html,
-body {
-    /* margin: 0; */
-    /* box-sizing: border-box; */
-    /* overflow-x: hidden; */
-}
-
 main {
     min-height: calc(100vh - 180px);
 }
-
 
 .main {
     display: flex;
@@ -295,6 +287,15 @@ h3 {
 .footer .move-up span:hover {
     color: var(--white);
     cursor: pointer;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 0px 4px 4px 0px rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    /* -webkit-backdrop-filter: blur(4px); */
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 @media only screen and (max-width: 1130px) {
