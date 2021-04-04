@@ -1,17 +1,17 @@
 <%var title = 'Submit'%>
 
-<link rel="stylesheet" type="text/css" href="./css/submit.css">
+<!-- <link rel="stylesheet" type="text/css" href="./css/submit.css"> -->
 <script type="text/javascript" src="./js/submit.js"></script>
 
-<main class="container">
+<main class="col d-flex justify-content-center">
     <!-- Ticket Submission widget -->
-    <div class="card">
-        <form id="ticketForm">
+    <div class="card text-center align-item-center" style="margin-bottom: auto; margin-top: 5%">
+        <form id="ticketForm" style="width: 80vh">
             <div class="card-header">Create Ticket</div>
             <div class="card-body">
                 <input class="text-input" type="text" name="headline" class="row" placeholder="Enter a headline" />
                 <textarea name="description" class="text-input" rows="20" style="height: auto; margin-top: 5px;"
-                    id="textArea" class="row" placeholder="Please enter your message here..." autofocus="autofocus"
+                    id="textArea" class="row" placeholder="Enter the description..." autofocus="autofocus"
                     required></textarea>
             </div>
             <div class="card-footer">
