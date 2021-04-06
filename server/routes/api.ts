@@ -10,4 +10,5 @@ router.use('/tickets', TicketRouter);
 router.use('/users', UserRouter);
 router.use('/token', TokenRouter);
 
+// @ts-ignore
 export default router;
