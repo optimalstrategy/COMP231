@@ -1,8 +1,75 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Support Ticket Prioritization</title> -->
+
+    <link rel="stylesheet" type="text/css" href="./css/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/owl.theme.default.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
 </head>
+
 <body>
-<%- body %>
+    <nav class="nav">
+        <div class="nav-menu flex-row">
+            <div class="nav-brand">
+                <a href="#" class="text-gray">Ticket Creator</a>
+            </div>
+            <div class="toggle-collapse">
+                <div class="toggle-icons">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            <div>
+                <ul class="nav-items">
+                    <li class="nav-link">
+                        <a href="#">Home</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">Ticket Support</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">SignUp</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">LogIn</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <%- body %>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="about-us">
+                <h2>About us</h2>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero cum quis ab voluptatibus
+                    mollitia dolore sint architecto consequatur amet officiis!</p>
+            </div>
+            <div class="newsletter">
+                <h2>Newsletter</h2>
+                <p>Stay update with our latest</p>
+                <div class="form-element">
+                    <input type="text" placeholder="Email"><span><i class="fas fa-chevron-right"></i></span>
+                </div>
+            </div>
+            <div class="move-up">
+                <span><i class="fas fa-arrow-circle-up fa-2x"></i></span>
+            </div>
+    </footer>
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/main.js"></script>
 </body>
+
 </html>

@@ -41,10 +41,12 @@ export const CORS = {
 
 const _MONGO_USER = process.env.MONGO_USERNAME;
 const _MONGO_PASS = process.env.MONGO_PASSWORD;
-const _MONGO_DB = process.env.MONGO_DATABASE || 'project_db';
+const _MONGO_DB = process.env.MONGO_DATABASE || 'comp231_db';
 
 export const DB_URI = _MONGO_USER
     ? `mongodb+srv://${_MONGO_USER}:${_MONGO_PASS}@cluster0.zj2g4.mongodb.net/${_MONGO_DB}?retryWrites=true&w=majority`
     : `mongodb://localhost/${_MONGO_DB}`;
 
-// console.log(DB_URI);
+export const AMQP_URI = "amqp://guest:guest@localhost/";
+export const TASK_QUEUE_NAME = "comp231_ml_tasks";
+export const REPLY_TO_QUEUE = "comp231_rpc_reply_to";

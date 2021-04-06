@@ -12,16 +12,22 @@ import mongoose from "mongoose";
 import cors from "cors";
 import StatusCodes from "http-status-codes";
 import "express-async-errors";
+
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
 import expressEjsLayout from 'express-ejs-layouts';
 import session from 'express-session'
-import Logger from "./shared/logger";
-import { isRunningUnderJest } from "./shared/functions";
-import { cookieProps, DB_URI, CORS } from "./shared/constants";
 import passport from 'passport';
+
+import Logger from "./shared/logger";
 import * as passportConfig from "./shared/passport";
 
-// Avoid connecting to the database
+import { isRunningUnderJest } from "./shared/functions";
+import { cookieProps, DB_URI, CORS } from "./shared/constants";
+
+import * as models from "./models";
+import BaseRouter from "./routes";
+
+// Avoid connecting to the database and rabbitmq when testing
 if (!isRunningUnderJest()) {
     mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -31,9 +37,6 @@ if (!isRunningUnderJest()) {
         console.log("Connected to MongoDB...");
     });
 }
-
-import * as models from "./models";
-import BaseRouter from "./routes";
 
 const app = express();
 app.use(passport.initialize());
@@ -52,9 +55,9 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(expressEjsLayout);
 app.use(session({
-    secret : 'secret',
-    resave : true,
-    saveUninitialized : true
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
 }));
 
 // Show routes called in console during development
@@ -87,9 +90,9 @@ app.use(async (req: Request, res, next) => {
 
 // error handler
 app.use(async (err: any, req: Request, res: Response, _next: NextFunction) => {
+    console.log(err);
+    Logger.error(err);
     if (req.path.startsWith("/api")) {
-        Logger.error(err);
-
         let statusCode: number;
         let error: string;
         try {

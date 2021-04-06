@@ -4,5 +4,5 @@ export interface IUser {
     password: string;
     date?: Date
 }
-export interface IUserDocument extends IUser, Document {}
-export interface IUserModel extends Model<IUserDocument> {}
+export interface IUserDocument extends IUser, Document { }
+export interface IUserModel extends Model<IUserDocument> { }
