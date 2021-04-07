@@ -11,6 +11,16 @@ const UserSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    role: {
+        type: String,
+        enum: [
+            'Ticket Creator',
+            'Ticket Processor',
+            'High Level Tech Support',
+            'Help Desk Software Developer'
+        ],
+        default: "Ticket Creator",
     }
 });
 
