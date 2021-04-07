@@ -4,13 +4,19 @@ const router = Router();
 
 /// [GET] Home page.
 router.get("/", function (_req: Request, res: Response, _: NextFunction) {
-    res.render("index");
+    res.render("index", { extractScripts: true, extractStyles: true });
 });
 
-/// [GET] home page.
+/// [GET] Ticket submission page.
 router.get("/submit", function (_req: Request, res: Response, _: NextFunction) {
-    res.render("submit");
+    res.render("submit", { extractScripts: true, extractStyles: true });
 });
+
+/// [GET] A temporary page with similar tickets.
+router.get("/similar", function (_req: Request, res: Response, _: NextFunction) {
+    res.render("similar", { extractScripts: true, extractStyles: true });
+});
+
 
 /// [GET] Return the list of developers working on the project.
 router.get('/developers', async (_req: Request, res: Response, _: NextFunction) => {
@@ -19,12 +25,12 @@ router.get('/developers', async (_req: Request, res: Response, _: NextFunction) 
 
 /// [GET] Returns the registration page.
 router.get('/register', (_req: Request, res: Response, _: NextFunction) => {
-    res.render('register');
+    res.render('register', { extractScripts: true, extractStyles: true });
 });
 
 /// [GET] Returns the login page.
 router.get('/login', (_req: Request, res: Response, _: NextFunction) => {
-    res.render('login');
+    res.render('login', { extractScripts: true, extractStyles: true });
 });
 
 export default router;
