@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
+import { UserModel } from "server/models/user/user.model";
 
 const router = Router();
 
@@ -34,8 +35,14 @@ router.get('/login', (_req: Request, res: Response, _: NextFunction) => {
 });
 
 /// [GET] Returns the account page.
-router.get('/account', (_req: Request, res: Response, _: NextFunction) => {
-    res.render('account', { extractScripts: true, extractStyles: true });
+router.get('/account', async (req: Request, res: Response, _: NextFunction) => {
+    console.log(req.user, typeof req.user);
+    if (!req.isAuthenticated()){
+        res.redirect("/login");
+        return;
+    }
+    const user = await UserModel.findById(req.user);
+    res.render('account', { extractScripts: true, extractStyles: true, user: user});
 });
 
 export default router;
