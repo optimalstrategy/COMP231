@@ -33,4 +33,9 @@ router.get('/login', (_req: Request, res: Response, _: NextFunction) => {
     res.render('login', { extractScripts: true, extractStyles: true });
 });
 
+/// [GET] Returns the account page.
+router.get('/account', (_req: Request, res: Response, _: NextFunction) => {
+    res.render('account', { extractScripts: true, extractStyles: true });
+});
+
 export default router;
