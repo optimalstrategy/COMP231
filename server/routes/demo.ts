@@ -4,18 +4,30 @@ import { UserModel } from "server/models/user/user.model";
 const router = Router();
 
 /// [GET] Home page.
-router.get("/", function (_req: Request, res: Response, _: NextFunction) {
-    res.render("index", { extractScripts: true, extractStyles: true });
+router.get("/",async (req: Request, res: Response, _: NextFunction) => {
+    let user = null;
+    if (req.isAuthenticated()) {
+        user = await UserModel.findById(req.user);
+    }
+    res.render('index', { extractScripts: true, extractStyles: true, user: user });
 });
 
 /// [GET] Ticket submission page.
-router.get("/submit", function (_req: Request, res: Response, _: NextFunction) {
-    res.render("submit", { extractScripts: true, extractStyles: true });
+router.get("/submit", async (req: Request, res: Response, _: NextFunction) => {
+    let user = null;
+    if (req.isAuthenticated()) {
+        user = await UserModel.findById(req.user);
+    }
+    res.render('submit', { extractScripts: true, extractStyles: true, user: user });
 });
 
 /// [GET] A temporary page with similar tickets.
-router.get("/similar", function (_req: Request, res: Response, _: NextFunction) {
-    res.render("similar", { extractScripts: true, extractStyles: true });
+router.get("/similar", async (req: Request, res: Response, _: NextFunction) => {
+    let user = null;
+    if (req.isAuthenticated()) {
+        user = await UserModel.findById(req.user);
+    }
+    res.render('similar', { extractScripts: true, extractStyles: true, user: user });
 });
 
 
@@ -25,13 +37,23 @@ router.get('/developers', async (_req: Request, res: Response, _: NextFunction) 
 });
 
 /// [GET] Returns the registration page.
-router.get('/register', (_req: Request, res: Response, _: NextFunction) => {
-    res.render('register', { extractScripts: true, extractStyles: true });
+router.get('/register', async (req: Request, res: Response, _: NextFunction) => {
+    let user = null;
+    if (req.isAuthenticated()) {
+        res.redirect("/account");
+        return;
+    }
+    res.render('register', { extractScripts: true, extractStyles: true, user: user });
 });
 
 /// [GET] Returns the login page.
-router.get('/login', (_req: Request, res: Response, _: NextFunction) => {
-    res.render('login', { extractScripts: true, extractStyles: true });
+router.get('/login', async (req: Request, res: Response, _: NextFunction) => {
+    let user = null;
+    if (req.isAuthenticated()) {
+        res.redirect("/account");
+        return;
+    }
+    res.render('login', { extractScripts: true, extractStyles: true, user: user });
 });
 
 /// [GET] Returns the account page.
