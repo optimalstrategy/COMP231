@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
+import { TicketModel } from "../models/tickets/ticket.model";
 
 const router = Router();
 
@@ -10,6 +11,16 @@ router.get("/", function (_req: Request, res: Response, _: NextFunction) {
 /// [GET] home page.
 router.get("/submit", function (_req: Request, res: Response, _: NextFunction) {
     res.render("submit");
+});
+
+router.get("/info/:id", async (req: Request, res: Response, _: NextFunction) => {
+    let user = null;
+    let ticket = null;
+    if (req.isAuthenticated()) {
+        user = await UserModel.findById(req.user);
+        ticket = await TicketModel.findById(req.params.id)
+    }
+    res.render('info', { extractScripts: true, extractStyles: true, user: user, ticket: ticket });
 });
 
 /// [GET] Return the list of developers working on the project.

@@ -14,6 +14,12 @@ const TicketSchema = new Schema({
         type: Array,
         default: []
     },
+    priority: {
+        type: String,
+    },
+    category: {
+        type: String,
+    },
     dateOfEntry: {
         type: Date,
         default: new Date()
