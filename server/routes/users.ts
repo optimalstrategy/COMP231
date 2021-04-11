@@ -10,12 +10,19 @@ const router = Router();
 
 /// [POST] /api/v1/users/register - Create a new user account.
 router.post('/register', async (req: Request, res: Response) => {
-    let { email, password }: { email: string, password: string } = req.body;
+    let { email, password, confirmation }:
+        { email: string, password: string, confirmation: string } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !confirmation) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-            "error": "Missing email, password, or both."
+            "error": "Missing any or all of email, password, confirmation."
         })
+    }
+
+    if (password !== confirmation) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            "error": "Passwords don't match (password != confirmation)."
+        });
     }
 
     let user = await UserModel.findOne({ email: email });

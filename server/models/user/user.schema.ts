@@ -15,11 +15,12 @@ const UserSchema = new Schema({
     role: {
         type: String,
         enum: [
-            'Ticket Creator', 
-            'Ticket Processor', 
-            'High Level Tech Support', 
+            'Ticket Creator',
+            'Ticket Processor',
+            'High Level Tech Support',
             'Help Desk Software Developer'
-        ]
+        ],
+        default: "Ticket Creator",
     }
 });
 
