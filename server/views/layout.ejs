@@ -20,7 +20,9 @@
 </head>
 
 <body>
-    <nav class="nav">
+    <% if (user != null) { %>
+      <!-- display the nav for the user -->
+      <nav class="nav">
         <div class="nav-menu flex-row">
             <div class="nav-brand">
                 <a href="/" class="text-gray">STP</a>
@@ -33,24 +35,60 @@
             <div>
                 <ul class="nav-items">
                     <li class="nav-link">
-                        <a href="#">Home</a>
+                        <a href="/">Home</a>
                     </li>
                     <li class="nav-link">
                         <a href="#">Ticket Support</a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">SignUp</a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#">LogIn</a>
-                    </li>
-                    <li class="nav-link">
                         <a href="#">Contact Us</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/account">Account</a>
+                    </li>
+                    <li class="nav-link" id="btn-logout">
+                        <a href="#">Logout</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <% } else { %>
+      <!-- display the nav for those without an account -->
+      <nav class="nav">
+        <div class="nav-menu flex-row">
+            <div class="nav-brand">
+                <a href="/" class="text-gray">STP</a>
+            </div>
+            <div class="toggle-collapse">
+                <div class="toggle-icons">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            <div>
+                <ul class="nav-items">
+                    <li class="nav-link">
+                        <a href="/">Home</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">Ticket Support</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">Contact Us</a>
+                    </li>
+                    <li class="nav-link" id="btn-signUp">
+                        <a href="/register">Sign Up</a>
+                    </li>
+                    <li class="nav-link" id="btn-login">
+                        <a href="/login">Login</a>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <% } %>
+    
 
     <%- body %>
 
