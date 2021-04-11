@@ -21,8 +21,8 @@
 
 <body>
     <% if (user != null) { %>
-      <!-- display the nav for the user -->
-      <nav class="nav">
+    <!-- display the nav for the user -->
+    <nav class="nav">
         <div class="nav-menu flex-row">
             <div class="nav-brand">
                 <a href="/" class="text-gray">STP</a>
@@ -38,24 +38,24 @@
                         <a href="/">Home</a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">Ticket Support</a>
+                        <a href="/submit">Submit Ticket</a>
                     </li>
                     <li class="nav-link">
                         <a href="#">Contact Us</a>
                     </li>
                     <li class="nav-link">
-                        <a href="/account">Account</a>
+                        <a href="/account">Account (<%= user.getRole() %>)</a>
                     </li>
                     <li class="nav-link" id="btn-logout">
-                        <a href="#">Logout</a>
+                        <a href="/api/v1/users/logout">Logout</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
     <% } else { %>
-      <!-- display the nav for those without an account -->
-      <nav class="nav">
+    <!-- display the nav for those without an account -->
+    <nav class="nav">
         <div class="nav-menu flex-row">
             <div class="nav-brand">
                 <a href="/" class="text-gray">STP</a>
@@ -71,7 +71,7 @@
                         <a href="/">Home</a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">Ticket Support</a>
+                        <a href="/submit">Submit Ticket</a>
                     </li>
                     <li class="nav-link">
                         <a href="#">Contact Us</a>
@@ -82,13 +82,13 @@
                     <li class="nav-link" id="btn-login">
                         <a href="/login">Login</a>
                     </li>
-                   
+
                 </ul>
             </div>
         </div>
     </nav>
     <% } %>
-    
+
 
     <%- body %>
 

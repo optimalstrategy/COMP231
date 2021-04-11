@@ -1,5 +1,11 @@
 import { Schema } from "mongoose";
+import { IUser } from "./user.types";
+
 const UserSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true
@@ -23,6 +29,25 @@ const UserSchema = new Schema({
         default: "Ticket Creator",
     }
 });
+
+UserSchema.methods.getRole = function (): string {
+    let self = (this as unknown as IUser);
+    let role;
+    switch (self.role) {
+        case "Ticket Creator":
+        case "Ticket Processor":
+            role = self.role;
+            break;
+        case "High Level Tech Support":
+            role = "HL. Tech Support";
+            break;
+        case "Help Desk Software Developer":
+        default:
+            role = "Developer"
+            break;
+    }
+    return role;
+};
 
 UserSchema.set("toJSON", {
     virtuals: true,

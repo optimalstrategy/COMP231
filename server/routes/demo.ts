@@ -4,7 +4,7 @@ import { UserModel } from "server/models/user/user.model";
 const router = Router();
 
 /// [GET] Home page.
-router.get("/",async (req: Request, res: Response, _: NextFunction) => {
+router.get("/", async (req: Request, res: Response, _: NextFunction) => {
     let user = null;
     if (req.isAuthenticated()) {
         user = await UserModel.findById(req.user);
@@ -48,23 +48,22 @@ router.get('/register', async (req: Request, res: Response, _: NextFunction) => 
 
 /// [GET] Returns the login page.
 router.get('/login', async (req: Request, res: Response, _: NextFunction) => {
-    let user = null;
     if (req.isAuthenticated()) {
         res.redirect("/account");
         return;
     }
-    res.render('login', { extractScripts: true, extractStyles: true, user: user });
+    res.render('login', { extractScripts: true, extractStyles: true, user: null, error: req.flash("error")[0] });
 });
 
 /// [GET] Returns the account page.
 router.get('/account', async (req: Request, res: Response, _: NextFunction) => {
-    console.log(req.user, typeof req.user);
-    if (!req.isAuthenticated()){
+    if (!req.isAuthenticated()) {
         res.redirect("/login");
         return;
     }
     const user = await UserModel.findById(req.user);
-    res.render('account', { extractScripts: true, extractStyles: true, user: user});
+    res.render('account', { extractScripts: true, extractStyles: true, user: user });
 });
+
 
 export default router;
