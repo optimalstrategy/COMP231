@@ -12,16 +12,34 @@ let SETTINGS = {
         }
     }
 };
+const URGENCY_MAP = Object.freeze({
+    "3": "Low",
+    "2": "Medium",
+    "1": "High",
+    "0": "Critical"
+});
 const sleep = m => new Promise(r => setTimeout(r, m))
 
 function updateUI(data) {
     toggleSpinner('off');
 
-    // Set the ticket id and hadline
+    // Set the ticket info
     $("#ticket-id").text(data.ticket_id);
     $("#headline").html(data.headline || "N/A");
-    $("#priority").html(data.priority || "N/A");
-    $("#category").html(data.category || "N/A");
+    if (data.priority) {
+        const urgency = URGENCY_MAP[data.priority[0]];
+        const score = data.priority[1].toFixed(4);
+        $("#priority").html(`<strong>${urgency}</strong> (${score})`);
+    } else {
+        $("#priority").html("N/A");
+    }
+    if (data.category) {
+        const category = data.category[0].replace(/(^|\s)\S/g, l => l.toUpperCase());
+        const score = data.category[1].toFixed(4);
+        $("#category").html(`<strong>${category}</strong> (${score})`);
+    } else {
+        $("#category").html("N/A");
+    }
 
     // Wrap the keywords in <spans> with tooltips that display their scores
     const kw2id = {};

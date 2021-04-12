@@ -1,4 +1,6 @@
 import { Schema } from "mongoose";
+import { TokenModel } from "../tokens/token.model";
+import { ITokenDocument } from "../tokens/token.types";
 import { IUser } from "./user.types";
 
 const UserSchema = new Schema({
@@ -48,6 +50,11 @@ UserSchema.methods.getRole = function (): string {
     }
     return role;
 };
+
+UserSchema.methods.getToken = async function (): Promise<ITokenDocument | null> {
+    return await TokenModel.findOne({ user_id: this._id });
+};
+
 
 UserSchema.set("toJSON", {
     virtuals: true,

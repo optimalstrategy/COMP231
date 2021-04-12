@@ -28,12 +28,3 @@ export function apiPath(path: string): string {
 export function makeApiPath(base: string): ((path: string) => string) {
     return (path: string) => apiPath(`${base}/${trimSlashes(path)}`);
 }
-export function generateToken(length: number): string {
-    const a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
-    const b = [];  
-    for (let i = 0; i < length; i++) {
-        const j = parseInt((Math.random() * (a.length-1)).toFixed(0));
-        b[i] = a[j];
-    }
-    return b.join("");
-}
