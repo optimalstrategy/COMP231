@@ -13,12 +13,16 @@ describe("Users CRUD tests", () => {
     // TODO: more user and auth tests
     it("GET /user/register creates a new user", async (done) => {
         const result = await request(app).post(api("/register")).send({
+            "name": "John",
             "email": "test@localhost",
-            "password": "hunter2"
+            "password": "hunter2",
+            "confirmation": "hunter2",
         });
         expect(result.status).toBe(StatusCodes.CREATED);
+        expect(result.body.name).toBe("John");
         expect(result.body.email).toBe("test@localhost");
         expect(result.body.password).toBeUndefined();
+        expect(result.body.confirmation).toBeUndefined();
         done();
     });
 });

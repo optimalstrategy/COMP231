@@ -1,4 +1,5 @@
-from threading import Thread
+from threading import Thread, Lock
+
 
 class PropagatingThread(Thread):
     """
@@ -20,3 +21,5 @@ class PropagatingThread(Thread):
             raise self.exc
         return self.ret
 
+
+__all__ = ["PropagatingThread", "Lock"]

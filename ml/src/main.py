@@ -1,18 +1,18 @@
 import json
 import asyncio
 from asyncio.locks import Semaphore
-from queue import Queue
+from queue import Queue, Empty
 from typing import Dict, Any
 
 from loguru import logger
 from aio_pika import connect, IncomingMessage, Exchange, Message
 
 try:
-    from tasks import keywords
-    from propagating_thread import PropagatingThread
+    from tasks import keywords, similar_tickets, categories, common
+    from propagating_thread import PropagatingThread, Lock
 except ImportError:
-    from .tasks import keywords
-    from .propagating_thread import PropagatingThread
+    from .tasks import keywords, similar_tickets, categories, common
+    from .propagating_thread import PropagatingThread, Lock
 
 
 AMQP_URL = "amqp://guest:guest@localhost/"
@@ -22,6 +22,8 @@ REPLY_TO_QUEUE = "comp231_rpc_reply_to"
 
 MAX_ML_PROCESSES = 4
 ML_PROC_SEMAPHORE = Semaphore(MAX_ML_PROCESSES)
+DB = similar_tickets.TicketDB()
+DB_LOCK = Lock()
 
 
 async def on_message(exchange: Exchange, message: IncomingMessage):
@@ -34,7 +36,9 @@ async def on_message(exchange: Exchange, message: IncomingMessage):
             logger.info("[E] Sending a reply with the error information.")
             extra = "Make sure that the message payload was valid."
             if type(e) is TypeError:
-                extra = "It is likely that the supplied settings/parameters were invalid."
+                extra = (
+                    "It is likely that the supplied settings/parameters were invalid."
+                )
             await exchange.publish(
                 Message(
                     json.dumps(
@@ -53,14 +57,19 @@ async def on_message(exchange: Exchange, message: IncomingMessage):
             )
 
 
-async def process_message(exchange: Exchange, message: IncomingMessage, context: Dict[str, Any]):
+async def process_message(
+    exchange: Exchange, message: IncomingMessage, context: Dict[str, Any]
+):
     logger.info(" [x] Received a new ticket %r" % message)
     logger.info(" [x] Ticket description is: %r" % message.body)
 
     ticket = json.loads(message.body)
     context["ticket_id"] = ticket.get("ticket_id", "<error: missing ticket_id>")
 
-    settings = {"keywords": {"method": "bert", "parameters": None}}
+    settings = {
+        "keywords": {"method": "bert", "parameters": None},
+        "similar_tickets": {**DB.config},
+    }
     settings = {**settings, **(ticket.get("settings", {}) or {})}
 
     logger.info(
@@ -75,26 +84,80 @@ async def process_message(exchange: Exchange, message: IncomingMessage, context:
         q = Queue()
         threads = [
             PropagatingThread(
-                target=lambda q, *rest: q.put(keywords.extract_keywords(*rest)),
+                target=lambda q, *rest: q.put(
+                    {"task": "keywords", "result": keywords.extract_keywords(*rest)}
+                ),
                 args=(
                     q,
                     ticket["body"],
                     settings["keywords"]["method"],
                     settings["keywords"]["parameters"],
                 ),
-            )
+            ),
+            PropagatingThread(
+                target=lambda q, *rest: q.put(
+                    {"task": "similar", "result": similar_tickets.add_predict(*rest)}
+                ),
+                args=(
+                    q,
+                    DB,
+                    ticket["ticket_id"],
+                    ticket["headline"],
+                    ticket["body"],
+                    settings["similar_tickets"],
+                    DB_LOCK,
+                ),
+            ),
+            PropagatingThread(
+                target=lambda q, *rest: q.put(
+                    {
+                        "task": "categories",
+                        "result": categories.predict_categories(*rest),
+                    }
+                ),
+                args=(
+                    q,
+                    ticket["headline"],
+                    ticket["body"],
+                ),
+            ),
         ]
+
         for t in threads:
             t.start()
+
         for t in threads:
             t.join()
 
-        ticket_keywords = q.get()
+        ticket_keywords = []
+        similar = []
+        predicted_categories = []
+        while True:
+            try:
+                result = q.get_nowait()
+                task = result["task"]
+                result = result["result"]
+
+                if task == "keywords":
+                    ticket_keywords = result
+                elif task == "similar":
+                    similar = result
+                elif task == "categories":
+                    predicted_categories = result
+                else:
+                    raise NotImplementedError(f"Unexpected task type {task}")
+
+            except Empty:
+                break
 
     results = {
         "status": "OK",
         "ticket_id": ticket["ticket_id"],
-        "results": {"keywords": ticket_keywords},
+        "results": {
+            "keywords": ticket_keywords,
+            "similar": similar,
+            "categories": predicted_categories,
+        },
         "settings": settings,
     }
 
@@ -102,7 +165,7 @@ async def process_message(exchange: Exchange, message: IncomingMessage, context:
 
     await exchange.publish(
         Message(
-            json.dumps(results).encode(),
+            json.dumps(results, default=common.convert).encode(),
             content_type="application/json",
             correlation_id=message.correlation_id,
             reply_to=message.reply_to,

@@ -12,6 +12,8 @@ interface ITaskResult {
     error?: string;
     results?: {
         keywords: [string, number][];
+        similar: [string, number][];
+        categories: [string | number, number][];
     },
     settings?: Record<string, any>,
 }
@@ -38,6 +40,8 @@ connection.declareQueueAsync(REPLY_TO_QUEUE).then(async queue => {
             ticket.status = "failed-to-process";
         } else {
             ticket.keywords = json.results!!.keywords;
+            ticket.similar = json.results!!.similar;
+            ticket.predictions = json.results!!.categories;
             ticket.status = "processed";
         }
         await ticket.save();

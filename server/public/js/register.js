@@ -33,7 +33,6 @@ async function signup(form) {
         json[field.name] = field.value;
     });
 
-
     validate(json);
     if (!form.get(0).reportValidity()) {
         return;

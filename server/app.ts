@@ -11,6 +11,7 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import cors from "cors";
 import StatusCodes from "http-status-codes";
+import flash from "express-flash";
 import "express-async-errors";
 
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
@@ -39,6 +40,7 @@ if (!isRunningUnderJest()) {
 }
 
 const app = express();
+app.use(flash());
 app.use(cookieParser());
 app.use(session({
     secret: 'secret',

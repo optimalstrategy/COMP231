@@ -3,6 +3,17 @@
 <main class="col d-flex justify-content-center">
     <div class="card text-center align-item-center" style="margin-bottom: auto; margin-top: 5%">
         <h1 class="card-header">Login</h1>
+        <% if (error !== undefined) { %>
+        <h3 class="card-subtitle">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="margin-top: 15px; margin-bottom: 0px;">
+                <strong>Error:</strong> <%= error %>
+                <button type="button" class="btn-close close" data-dismiss="alert" aria-label="Close"
+                    onclick="$('.alert').alert('close')">
+                </button>
+            </div>
+        </h3>
+        <% } %>
         <form id="login-form" action="/api/v1/users/login" method="POST" class="card-body">
             <input id="email" name="email" class="text-input" placeholder="Enter Email" required />
             <input id="password" type="password" name="password" class="text-input" placeholder="Enter Password"
@@ -10,6 +21,8 @@
             <button id="btnLogin" class="btn btn-primary btn-block" style="margin-top: 10px; width: 95%;">
                 Login
             </button>
+            <p style="margin-top: 10px">Don't have an account? <a class="btn btn-sm btn-primary" href="/register">Sign
+                    Up</a></p>
         </form>
     </div>
 </main>

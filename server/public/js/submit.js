@@ -1,6 +1,8 @@
 const API_URL = "/api/v1/tickets/submit";
-const POLL_URL = "/api/v1/tickets/info"
+const POLL_URL = "/api/v1/tickets/info";
+const FRONT_TICKET_URL = "/ticket";
 const POLLING_INTERVAL = 250; // ms
+const MAX_DESC_LENGTH_IN_TICKET_CARD = 350;
 let SETTINGS = {
     keywords: {
         method: "bert",
@@ -12,16 +14,96 @@ let SETTINGS = {
         }
     }
 };
+const URGENCY_MAP = Object.freeze({
+    "3": "Low",
+    "2": "Medium",
+    "1": "High",
+    "0": "Critical"
+});
+const THEME_MAP = {
+    "Critical": {
+        "bg": "bg-danger",
+        "fg": "text-white"
+    },
+    "High": {
+        "bg": "bg-warning",
+        "fg": "text-dark"
+    },
+    "Medium": {
+        "bg": "bg-secondary",
+        "fg": "text-white"
+    },
+    "Low": {
+        "bg": "bg-success",
+        "fg": "text-white"
+    },
+};
 const sleep = m => new Promise(r => setTimeout(r, m))
+
+function generateSimilarTicketCard(ticket, score, urgency) {
+    const theme = THEME_MAP[urgency];
+    const title = ticket.headline || "(Missing Title)";
+    const description =
+        ticket.description.length <= MAX_DESC_LENGTH_IN_TICKET_CARD ?
+        ticket.description :
+        ticket.description.substring(0, MAX_DESC_LENGTH_IN_TICKET_CARD) + " ...";
+
+    return `<div class="card row-sm-5 row-md-5 col-lg-3" style="margin: 5px;">
+    <h6 class="card-header ${theme.bg} ${theme.fg}">Ticket <span 
+    style="text-decoration:underline;">${ticket.ticket_id} (${score}%)</span></h6>
+    <div class="card-body">
+        <h6 class="card-title text-center"><strong>${title}</strong></h6>
+        <p class="card-text">${description}</p>
+        <div class="row">
+            <span class="badge ${theme.bg} ${theme.fg}" data-bs-toggle="tooltip" data-bs-placement="right" 
+            title="Score: ${ticket.priority[1]?.toFixed(4)}">Priority: ${urgency}</span>
+            <a href="${FRONT_TICKET_URL}/${ticket.ticket_id}" class="btn btn-primary" style="margin-top: 5px;" role="button">See Ticket</a>
+        </div>
+    </div>
+</div>`;
+}
 
 function updateUI(data) {
     toggleSpinner('off');
 
-    // Set the ticket id and hadline
+    // Set the ticket info
     $("#ticket-id").text(data.ticket_id);
     $("#headline").html(data.headline || "N/A");
-    $("#priority").html(data.priority || "N/A");
-    $("#category").html(data.category || "N/A");
+    if (data.priority) {
+        const urgency = URGENCY_MAP[data.priority[0]];
+        const theme = THEME_MAP[urgency];
+        const score = data.priority[1].toFixed(4);
+
+        $("#ticket-header").addClass(theme.bg).addClass(theme.fg);
+        $("#priority")
+            .removeClass("bg-secondary")
+            .addClass(theme.bg)
+            .addClass(theme.fg)
+            .attr("title", `Score: ${score}`)
+            .html(`<strong>${urgency}</strong>`);
+    } else {
+        $("#priority").html("N/A");
+    }
+    if (data.category) {
+        const category = data.category[0].replace(/(^|\s)\S/g, l => l.toUpperCase());
+        const score = data.category[1].toFixed(4);
+        $("#category")
+            .attr("title", `Score: ${score}`)
+            .html(`<strong>${category}</strong>`);
+    } else {
+        $("#category").html("N/A");
+    }
+
+
+    for (const pair of data.similar) {
+        const t = pair[0];
+        const score = (100.0 * pair[1]).toFixed(0);
+        const urgency = URGENCY_MAP[t.priority[0]];
+
+        html = generateSimilarTicketCard(t, score, urgency)
+        $("#similar").append(html);
+    }
+
 
     // Wrap the keywords in <spans> with tooltips that display their scores
     const kw2id = {};
@@ -35,7 +117,7 @@ function updateUI(data) {
             kw2id[kw] = id;
 
             let html = `<span class="keyword" id="${id}"`
-            html += `data-toggle="tooltip" data-placement="top" title="Score: ${score}">${kw}`
+            html += `data-bs-toggle="tooltip" data-bs-placement="top" title="Score: ${score}">${kw}`
             html += i == arr.length - 1 ? "" : ", ";
             html += `</span>`;
             return html;
@@ -164,6 +246,7 @@ async function poll(id) {
 
         if (result.status == "processed") {
             console.log(`[INFO] The ticket has been processed successfully; updating the UI.`);
+            $("#ticketPageBtn").attr("href", `${FRONT_TICKET_URL}/${result.ticket_id}`)
             updateUI(result);
         } else {
             console.log(`[ERROR] Failed to process the ticket: ${JSON.stringify(result)}`);
@@ -248,7 +331,7 @@ $(document).ready(() => {
         onSignupRedirect();
     }
     $("body").tooltip({
-        selector: '[data-toggle=tooltip]'
+        selector: '[data-bs-toggle=tooltip]'
     });
     $("#btnSubmit").on("click", (_) => {
         toggleSubmitButton('off');

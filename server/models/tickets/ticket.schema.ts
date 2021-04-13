@@ -1,4 +1,5 @@
 import { Schema } from "mongoose";
+
 const TicketSchema = new Schema({
     description: String,
     headline: {
@@ -11,6 +12,14 @@ const TicketSchema = new Schema({
         default: "processing"
     },
     keywords: {
+        type: Array,
+        default: []
+    },
+    similar: {
+        type: Array,
+        default: []
+    },
+    predictions: {
         type: Array,
         default: []
     },
@@ -30,6 +39,8 @@ TicketSchema.set("toJSON", {
     transform: function (_doc: any, ret: any) {
         ret.id = ret._id;
         ret.ticket_id = ret._id;
+        ret.priority = ret.predictions[0];
+        ret.category = ret.predictions[1];
     },
 });
 

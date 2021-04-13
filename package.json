@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@droidsolutions-oss/amqp-ts": "^2.3.0",
+        "@types/express-flash": "^0.0.2",
         "@types/http-status-codes": "^1.2.0",
         "bcryptjs": "^2.4.3",
         "cookie-parser": "~1.4.4",
@@ -21,6 +22,7 @@
         "express": "~4.16.1",
         "express-async-errors": "^3.1.1",
         "express-ejs-layouts": "^2.5.0",
+        "express-flash": "^0.0.2",
         "express-session": "^1.17.1",
         "helmet": "^4.4.1",
         "http-errors": "^1.8.0",

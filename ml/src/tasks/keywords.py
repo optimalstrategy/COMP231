@@ -55,7 +55,7 @@ def extract_keywords(
         if keybert is None:
             raise ModuleNotFoundError("The KeyBERT extractor is not available.")
         if method not in _CACHE:
-            logger.debug("KeyBERT is not in cache, loading ...")
+            logger.debug("[KEYWORDS] KeyBERT is not in cache, loading ...")
             _CACHE[method] = {
                 "model": keybert.KeyBERT(BERT_EMBEDDINGS),
                 "settings": settings or BERT_SETTINGS,
@@ -70,12 +70,15 @@ def extract_keywords(
 
     elif method == "yake":
         if method not in _CACHE:
-            logger.debug("Yake is not in cache, loading ...")
-            settings = (settings or YAKE_SETTINGS)
-            _CACHE[method] = { "model": yake.KeywordExtractor(**settings), "settings": settings }
+            logger.debug("[KEYWORDS] Yake is not in cache, loading ...")
+            settings = settings or YAKE_SETTINGS
+            _CACHE[method] = {
+                "model": yake.KeywordExtractor(**settings),
+                "settings": settings,
+            }
 
         if settings is not None and _CACHE[method]["settings"] != settings:
-            logger.debug("Yake settings have been changed, recreating the model...")
+            logger.debug("[KEYWORDS] Yake settings have been changed, recreating the model...")
             stored = _CACHE[method]["settings"]
             stored.update(settings)
             _CACHE[method]["model"] = yake.KeywordExtractor(**stored)
