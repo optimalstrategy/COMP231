@@ -5,14 +5,23 @@ import bcrypt from 'bcryptjs';
 
 import "../shared/passport";
 import { UserModel } from '../models/user/user.model';
+import { UserRoles, USER_ROLES } from "../models/user/user.schema";
+
 import Logger from 'server/shared/logger';
 
 const router = Router();
 
+interface RegistrationPayload {
+    name: string;
+    email: string;
+    password: string;
+    confirmation: string;
+    role: string;
+}
+
 /// [POST] /api/v1/users/register - Create a new user account.
 router.post('/register', async (req: Request, res: Response) => {
-    let { name, email, password, confirmation }:
-        { name: string, email: string, password: string, confirmation: string } = req.body;
+    let { name, email, password, confirmation, role }: RegistrationPayload = req.body;
 
     if (!name || !email || !password || !confirmation) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -26,6 +35,14 @@ router.post('/register', async (req: Request, res: Response) => {
         });
     }
 
+    let chosenRole = role || UserRoles.DEVELOPER;
+    if (USER_ROLES.findIndex((r) => r == chosenRole) == -1) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            "error": `Invalid user role: ${chosenRole}. Expected one of the values in validRoles.`,
+            "validRoles": USER_ROLES,
+        });
+    }
+
     let user = await UserModel.findOne({ email });
     if (user) {
         return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
@@ -36,7 +53,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
     const salt = await bcrypt.genSalt(12);
     const pwdHash = await bcrypt.hash(password, salt);
-    user = await UserModel.create({ name, email, password: pwdHash })
+    user = await UserModel.create({ name, email, password: pwdHash, role: chosenRole })
 
     req.login(user, (_) => { });
     res.status(StatusCodes.CREATED).json(user);

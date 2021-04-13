@@ -62,7 +62,8 @@ router.get('/account', async (req: Request, res: Response, _: NextFunction) => {
         return;
     }
     const user = await UserModel.findById(req.user);
-    res.render('account', { extractScripts: true, extractStyles: true, user: user });
+    const token = await user?.getToken();
+    res.render('account', { extractScripts: true, extractStyles: true, user, token });
 });
 
 

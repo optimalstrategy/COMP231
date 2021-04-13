@@ -3,6 +3,21 @@ import { TokenModel } from "../tokens/token.model";
 import { ITokenDocument } from "../tokens/token.types";
 import { IUser } from "./user.types";
 
+
+export const UserRoles = Object.freeze({
+    TICKET_CREATOR: 'Ticket Creator',
+    TICKET_PROCESSOR: 'Ticket Processor',
+    HL_TECH_SUPPORT: 'High Level Tech Support',
+    DEVELOPER: "Help Desk Software Developer",
+});
+export const USER_ROLES = [
+    UserRoles.TICKET_CREATOR,
+    UserRoles.TICKET_PROCESSOR,
+    UserRoles.HL_TECH_SUPPORT,
+    UserRoles.DEVELOPER
+];
+
+
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -22,12 +37,7 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: [
-            'Ticket Creator',
-            'Ticket Processor',
-            'High Level Tech Support',
-            'Help Desk Software Developer'
-        ],
+        enum: USER_ROLES,
         default: "Ticket Creator",
     }
 });

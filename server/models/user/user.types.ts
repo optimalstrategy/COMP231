@@ -1,4 +1,5 @@
 import { Document, Model } from "mongoose";
+import { ITokenDocument } from "../tokens/token.types";
 
 /// Defines the interface of a possible user.
 export interface IUser {
@@ -15,6 +16,12 @@ export interface IUser {
     | 'Ticket Processor'
     | 'High Level Tech Support'
     | 'Help Desk Software Developer';
-}
+    /// Returns the role of the user as a frontend-adapted string.
+    getRole(): string;
+    /// Asynchronously retrieves the user's token.
+    getToken(): Promise<ITokenDocument | null>;
+};
+
+
 export interface IUserDocument extends IUser, Document { }
 export interface IUserModel extends Model<IUserDocument> { }
