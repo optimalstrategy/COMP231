@@ -3,7 +3,7 @@ import re
 import numpy as np
 import pandas as pd
 import Stemmer as py_stemmer
-from typing import Callable, List
+from typing import Callable, List, Any
 
 from sklearn.feature_extraction.text import CountVectorizer
 
@@ -29,6 +29,12 @@ DESCRIPTION_REGEX = re.compile("(\W|\d)+")
 
 
 def load_data(path: str = DATA_PATH) -> pd.DataFrame:
+    """
+    Loads the ticket dataset at the given path and filters out the categories with extremely low sample counts.
+
+    :param path: a path to load the dataset from
+    :return: loaded dataset
+    """
     df = pd.read_csv(path)
 
     selected_categories = set(
@@ -49,6 +55,12 @@ def load_data(path: str = DATA_PATH) -> pd.DataFrame:
 
 
 def clean_input_string(s: str) -> str:
+    """
+    Clears the input string by removing the unexpected characters and redundant whitespace.
+
+    :param s: a string to clean
+    :return: cleaned string
+    """
     return DESCRIPTION_REGEX.sub(" ", s).strip()
 
 
@@ -59,7 +71,26 @@ def preprocess_string(
         ngram_range=(2, 2)
     ).build_analyzer(),
 ) -> List[str]:
+    """
+    Tokenizes the given string into (2, 2) ngrams, stemming every word in the process.
+
+    :param s: the string to preprocess
+    :param stemmer: a tokenizer instance
+    :param tokenizer: a tokenizer function (CountVectorizer(ngram_range=(2, 2)) default)
+    :return: string tokens
+    """
     return [
         " ".join(stemmer.stemWords(gram.split()))
         for gram in tokenizer(clean_input_string(s))
     ]
+
+def convert(o: Any):
+    """
+    A helper that converts numpy types to python types.
+
+    :param o: an object to convert
+    :return:
+    """
+    if isinstance(o, np.int64): return int(o)
+    if isinstance(o, np.float32): return float(o)
+    raise TypeError

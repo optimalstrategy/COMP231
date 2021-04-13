@@ -12,11 +12,21 @@
                 required />
             <input id="confirmation" type="password" name="confirmation" class="text-input"
                 placeholder="Confirm Password" required />
+            <div class="form-group justify-content-center">
+                <label style="margin-top:5px;">Choose role:</label>
+                <select class="text-input" id="role" name="role" required>
+                    <option value="Help Desk Software Developer" selected>Help Desk Software Developer</option>
+                    <option value="Ticket Creator">Ticket Creator</option>
+                    <option value="Ticket Processor">Ticket Processor</option>
+                    <option value="High Level Tech Support">High Level Tech Support</option>
+                </select>
+            </div>
             <button id="btnSubmit" type="button" class="btn btn-primary btn-block"
                 style="margin-top: 10px; width: 95%;">
                 Register
             </button>
-            <p style="margin-top: 10px">Already have an account? <a class="btn btn-sm btn-primary" href="/login">Login</a></p>
+            <p style="margin-top: 10px">Already have an account? <a class="btn btn-sm btn-primary"
+                    href="/login">Login</a></p>
         </form>
     </div>
 </main>

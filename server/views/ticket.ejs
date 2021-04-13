@@ -1,0 +1,26 @@
+<%var title = 'Ticket Info'%>
+
+<link rel="stylesheet" type="text/css" href="/css/submit.css">
+<script type="text/javascript" src="/js/submit.js"></script>
+
+<main class="container justify-content-center" style="min-width: 80vw;">
+    <% if (!ticket) { %>
+    <div class="card">
+        <h4 class="card-header">Error: Ticket Not Found</h4>
+        <div class="card-body">
+            <p class="card-text">
+                We could not find the ticket with this ID. Please make sure that the supplied ID is correct.
+            </p>
+        </div>
+    </div>
+    <% } else { %>
+    <%- include("partials/ticket_view.ejs", {"includeBtn": false}) %>
+
+    <script type='text/javascript'>
+        // The line below undoes the HTML escapes.
+        const data = $('<textarea />').html("<%= JSON.stringify(ticket) %>").text();
+        const ticket = JSON.parse(data);
+        updateUI(ticket);
+    </script>
+    <% }  %>
+</main>

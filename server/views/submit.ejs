@@ -28,30 +28,7 @@
     </div>
 
     <!-- Ticket Info widget -->
-    <!-- NOTE: remove visually-hidden during development -->
-    <div id="ticket-view" class="card visually-hidden" style="margin-top: 5px; margin-bottom: 5vh; min-width: 80vw;">
-        <h4 class="card-header">Ticket Info</h4>
-        <div class="card-body">
-            <p class="card-text">ID: <span id="ticket-id"></span></p>
-            <p class="card-text">Headline: <span id="headline"></span></p>
-            <p class="card-text">Priority: <span id="priority"></span></p>
-            <p class="card-text">Category: <span id="category"></span></p>
-            <div class="card">
-                <h5 class="card-header">Keywords</h5>
-                <div class="card-body">
-                    <div class="card-text" id="keywords">
-
-                    </div>
-                </div>
-            </div>
-            <div class="card" style="margin-top: 5px;">
-                <h5 class="card-header">Description</h5>
-                <div class="card-body card-text" id="description">
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <%- include("partials/ticket_view.ejs", {"includeBtn": true}) %>
 
     <div class="push"></div>
 </main>
