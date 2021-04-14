@@ -165,7 +165,7 @@ def test_with_real_vectors():
     )
     assert db.find_similar_tickets("t0") == [("t1", 1.0)]
 
-    db.add_ticket("t2", "An unrelated ticket", "Completely unrelated description");
+    db.add_ticket("t2", "An unrelated ticket", "Completely unrelated description")
     assert db.find_similar_tickets("t2") == []
 
 

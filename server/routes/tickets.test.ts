@@ -64,7 +64,7 @@ describe("Ticket CRUD tests", () => {
 
         done();
     });
-    it("GET /tickets/update/:id should update the ticket", async (done) => {
+    it("PUT /tickets/update/:id should update the ticket", async (done) => {
         const agent = request.agent(app);
         const _creds = await register(agent);
 

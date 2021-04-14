@@ -95,13 +95,13 @@ function updateUI(data) {
     }
 
 
+    $("#similar").empty();
     for (const pair of data.similar) {
         const t = pair[0];
         const score = (100.0 * pair[1]).toFixed(0);
         const urgency = URGENCY_MAP[t.priority[0]];
 
         html = generateSimilarTicketCard(t, score, urgency)
-        $("#similar").html("");
         $("#similar").append(html);
     }
 
