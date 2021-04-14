@@ -1,30 +1,32 @@
-<%var title = 'Login'%>
+<%var title = 'Sign Up'%>
 
-
-<h1>Register</h1>
-<form action="/api/v1/users/register" method="POST">
-    <div>
-        <label for="name">Name</label>
-        <input type="name" name="name" placeholder="Enter Name" value="<%= typeof name != 'undefined' ? name : '' %>" />
-
+<link rel="stylesheet" type="text/css" href="./css/register.css">
+<script type="text/javascript" src="./js/register.js"></script>
+<main class="col d-flex justify-content-center">
+    <div class="card text-center align-item-center" style="margin-bottom: auto; margin-top: 5%">
+        <h1 class="card-header">Sign Up</h1>
+        <form id="signup-form" action="/api/v1/users/register" method="POST" class="card-body">
+            <input id="name" name="name" class="text-input" placeholder="Enter Name" required />
+            <input id="email" type="email" name="email" class="text-input" placeholder="Enter Email" required />
+            <input id="password" type="password" name="password" class="text-input" placeholder="Create Password"
+                required />
+            <input id="confirmation" type="password" name="confirmation" class="text-input"
+                placeholder="Confirm Password" required />
+            <div class="form-group justify-content-center">
+                <label style="margin-top:5px;">Choose role:</label>
+                <select class="text-input" id="role" name="role" required>
+                    <option value="Help Desk Software Developer" selected>Help Desk Software Developer</option>
+                    <option value="Ticket Creator">Ticket Creator</option>
+                    <option value="Ticket Processor">Ticket Processor</option>
+                    <option value="High Level Tech Support">High Level Tech Support</option>
+                </select>
+            </div>
+            <button id="btnSubmit" type="button" class="btn btn-primary btn-block"
+                style="margin-top: 10px; width: 95%;">
+                Register
+            </button>
+            <p style="margin-top: 10px">Already have an account? <a class="btn btn-sm btn-primary"
+                    href="/login">Login</a></p>
+        </form>
     </div>
-    <div>
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Enter Email"
-            value="<%= typeof email != 'undefined' ? email : '' %>" />
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="Create Password"
-            value="<%= typeof password != 'undefined' ? password : '' %>" />
-    </div>
-    <div>
-        <label for="password2">Confirm Password</label>
-        <input type="password" name="password2" placeholder="Confirm Password"
-            value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
-    </div>
-    <button type="submit" class="btn btn-primary btn-block">
-        Register
-    </button>
-</form>
-<p>Have An Account? <a href="/login">Login</a></p>
+</main>

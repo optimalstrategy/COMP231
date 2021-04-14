@@ -271,6 +271,26 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "imbalanced-learn"
+version = "0.8.0"
+description = "Toolbox for imbalanced dataset in machine learning."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+joblib = ">=0.11"
+numpy = ">=1.13.3"
+scikit-learn = ">=0.24"
+scipy = ">=0.19.1"
+
+[package.extras]
+dev = ["black", "flake8"]
+docs = ["sphinx", "sphinx-gallery", "pydata-sphinx-theme", "sphinxcontrib-bibtex", "numpydoc", "matplotlib", "pandas", "seaborn"]
+optional = ["keras", "tensorflow"]
+tests = ["pytest", "pytest-cov"]
+
+[[package]]
 name = "iniconfig"
 version = "1.1.1"
 description = "iniconfig: brain-dead simple config-ini parsing"
@@ -1402,7 +1422,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "00b1c36ae7e30c11d8b1256ec8c2323014b0e9792ab9cc33b8ecaa48667404ef"
+content-hash = "61ff68bfa587ab637637ba87c14d000f6e69e73a71c635907ed86101cfa191b2"
 
 [metadata.files]
 aio-pika = [
@@ -1569,6 +1589,10 @@ graphviz = [
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
     {file = "idna-2.10.tar.gz", hash = "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"},
+]
+imbalanced-learn = [
+    {file = "imbalanced-learn-0.8.0.tar.gz", hash = "sha256:1c04d203575088af5814511b6238b38e7523370cc188770b7a25418d09cf3d29"},
+    {file = "imbalanced_learn-0.8.0-py3-none-any.whl", hash = "sha256:58f9baaf90bfe8931973b9637328bda327850c7fde3787ac19922e36bfe8c6a2"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},

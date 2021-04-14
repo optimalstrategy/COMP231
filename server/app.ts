@@ -11,6 +11,7 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import cors from "cors";
 import StatusCodes from "http-status-codes";
+import flash from "express-flash";
 import "express-async-errors";
 
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
@@ -39,6 +40,13 @@ if (!isRunningUnderJest()) {
 }
 
 const app = express();
+app.use(flash());
+app.use(cookieParser());
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors(CORS));
@@ -54,11 +62,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(expressEjsLayout);
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
+
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === "development") {
@@ -68,7 +72,6 @@ if (process.env.NODE_ENV === "development") {
 }
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 // Security
 if (process.env.NODE_ENV === "production") {

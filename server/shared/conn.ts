@@ -1,5 +1,6 @@
 import { Connection, Message } from "@droidsolutions-oss/amqp-ts";
 import { ITicketDocument } from "server/models/tickets/ticket.types";
+import { TicketModel } from "../models/tickets/ticket.model";
 import { ISubmissionSettings } from "server/routes/interfaces";
 import { AMQP_URI, REPLY_TO_QUEUE, TASK_QUEUE_NAME } from "./constants";
 import { isRunningUnderJest } from "./functions";
@@ -11,6 +12,8 @@ interface ITaskResult {
     error?: string;
     results?: {
         keywords: [string, number][];
+        similar: [string, number][];
+        categories: [string | number, number][];
     },
     settings?: Record<string, any>,
 }
@@ -19,13 +22,29 @@ const connection = new Connection(AMQP_URI);
 const queue = connection.declareQueue(TASK_QUEUE_NAME, { durable: false });
 
 connection.declareQueueAsync(REPLY_TO_QUEUE).then(async queue => {
-    await queue.activateConsumer((message: Message) => {
+    await queue.activateConsumer(async (message: Message) => {
         const json = message.getJsonContent<ITaskResult>();
         Logger.info(`RPC Reply Message received for ticket ${json.ticket_id} with ID=` + message.properties.correlationId);
         Logger.info(`Result was ${json.status}.`);
         Logger.debug(`Full response: ${JSON.stringify(json, null, 4)}`);
 
-        // TODO: put the info into the database here
+        const ticket = await TicketModel.findById(json.ticket_id);
+        if (!ticket) {
+            Logger.error("Parallel processing error - couldn't find the ticket by ID after processing; " +
+                "something must've happened to it in the meantime.");
+            message.ack();
+            return;
+        }
+
+        if (json.status != "OK") {
+            ticket.status = "failed-to-process";
+        } else {
+            ticket.keywords = json.results!!.keywords;
+            ticket.similar = json.results!!.similar;
+            ticket.predictions = json.results!!.categories;
+            ticket.status = "processed";
+        }
+        await ticket.save();
 
         message.ack();
     });
@@ -44,12 +63,13 @@ async function _sendForProcessing(ticket: ITicketDocument, settings?: ISubmissio
 async function _sendForProcessingStub(ticket: ITicketDocument, settings?: ISubmissionSettings) {
     Logger.debug("[RPC] Creating a fake ticket during testing.");
     ticket.status = "processed";
-    ticket.keywords = ["test", "keywords"];
+    ticket.keywords = [["test", 0.5], ["keywords", 0.7]];
     await ticket.save();
 }
 
 
 export const TaskConnection = connection;
 export const TaskQueue = queue;
-export const sendForProcessing = isRunningUnderJest() ? _sendForProcessingStub : _sendForProcessing;
-
+export const sendForProcessing = isRunningUnderJest()
+    ? _sendForProcessingStub
+    : _sendForProcessing;

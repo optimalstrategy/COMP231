@@ -1,10 +1,18 @@
 @import url(../fonts/fonts.css);
 
-html,
-body {
-    margin: 0;
-    box-sizing: border-box;
-    overflow-x: hidden;
+main {
+    min-height: calc(100vh - 180px);
+}
+
+.main {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: #c0392b;
+    font-family: var(--Lexend);
+    color: white;
+    letter-spacing: 1px;
 }
 
 :root {
@@ -25,6 +33,20 @@ body {
     --Josefin: 'Josefin', cursive;
     --Lexend: 'Lexend', cursive;
     --Livvic: 'Livvic', cursive;
+}
+
+.text-input {
+    appearance: none;
+    width: 95%;
+    height: 35px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background: #e8ebed;
+    color: #576366;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 /*Global Classes*/
@@ -58,21 +80,27 @@ h3 {
     font-size: 1.3rem;
 }
 
-button.btn {
-    border: none;
+.button {
+    border: 1px none;
     border-radius: 2rem;
     padding: 1rem 3rem;
     font-size: 1rem;
     font-family: var(--Livvic);
-    cursor: pointer;
+    background: var(--sky);
+    color: var(--midnight);
+    /* padding: 1rem 3rem;
+    font-size: 1rem;
+
+    cursor: pointer; */
 }
+
+.button:hover {
+    border: 1px solid var(--white);
+}
+
 
 span {
     font-family: var(--Abel);
-}
-
-.container {
-    margin: 0 5vw;
 }
 
 .text-gray {
@@ -165,11 +193,6 @@ p {
     color: #a1c4cf;
 }
 
-/*Navbar*/
-
-/* Main Content */
-
-/* Site Title */
 
 main .site-title {
     background: url('../assets/support.jpg');
@@ -190,25 +213,11 @@ h3 {
     margin: .3rem;
 }
 
-main .site-title .btn {
-    margin: 1.8rem;
-    background: var(--sky);
-}
-
-main .site-title .btn:hover {
-    background: transparent;
-    border: 1px solid var(--white);
-    color: white;
-}
-
-/* --x-- Site Title --x-- */
-
-/* ---- Footer ---- */
 
 .footer {
-    height: 100%;
+    height: 35vh;
     background: var(--bg-color);
-    position: relative;
+    /* position: relative; */
 }
 
 .footer .container {
@@ -219,7 +228,8 @@ main .site-title .btn:hover {
 .footer .container>div {
     flex-grow: 1;
     flex-basis: 0;
-    padding: 3rem .9rem;
+    padding-top: 1rem;
+    padding-bottom: 0.9rem;
 }
 
 .footer .container h2 {
@@ -267,7 +277,7 @@ main .site-title .btn:hover {
 .footer .move-up {
     position: absolute;
     right: 6%;
-    top: 50%;
+    top: 125vh;
 }
 
 .footer .move-up span {
@@ -279,9 +289,14 @@ main .site-title .btn:hover {
     cursor: pointer;
 }
 
-/* --x-- Footer --x-- */
-
-/* Viewport less than or equal to 1130px*/
+.card {
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 0px 4px 4px 0px rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    /* -webkit-backdrop-filter: blur(4px); */
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
 
 @media only screen and (max-width: 1130px) {
     .site-content .post-content>.post-image .post-info {
@@ -299,9 +314,6 @@ main .site-title .btn:hover {
     }
 }
 
-/* Viewport less than or equal to 1130px*/
-
-/* Viewport less than or equal to 750px*/
 
 @media only screen and (max-width: 750px) {
 
@@ -323,9 +335,6 @@ main .site-title .btn:hover {
     }
 }
 
-/* Viewport less than or equal to 750px*/
-
-/* Viewport less than or equal to 520px*/
 
 @media only screen and (max-width: 520px) {
     main .blog {
@@ -345,9 +354,24 @@ main .site-title .btn:hover {
         text-align: center;
     }
 
+    .footer {
+        height: 50vh;
+    }
+
+    main {
+        min-height: calc(100vh - 50vh);
+    }
+
     nav .toggle-collapse {
         width: 80% !important;
     }
 }
 
-/* Viewport less than or equal to 520px*/
+
+.modal-header-danger {
+    background-color: #dc3545;
+}
+
+.modal-title-danger {
+    color: white !important;
+}
