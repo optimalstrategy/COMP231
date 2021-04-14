@@ -1,6 +1,7 @@
 import { Request } from 'express';
 
 export const ENV = process.env.NODE_ENV || 'development';
+export const MIN_TICKET_DESCRIPTION_LENGTH = 50; // (characters)
 
 // Cookie Properties
 export const cookieProps = Object.freeze({

@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 import TicketRouter from './ticket';
 import UserRouter from './users';
-import TokenRouter from './token';
+import TokenRouter from './tokens';
 const router = Router();
 
 router.use('/tickets', TicketRouter);

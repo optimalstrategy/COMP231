@@ -23,6 +23,25 @@ router.get('/apply', async (req: Request, res: Response, _: NextFunction): Promi
         token: uuidv4()
     });
     res.status(StatusCodes.CREATED).json(token);
+});
+
+
+/// [GET] /api/v1/token/quota - Get the current quota information.
+router.get('/quota', async (req: Request, res: Response, _: NextFunction): Promise<any> => {
+    if (!req.isAuthenticated()) {
+        return res.status(StatusCodes.UNAUTHORIZED)
+            .json({ error: "User not authenticated" });
+    }
+    const user = await UserModel.findById(req.user);
+    const existing = await user?.getToken();
+    if (!existing) {
+        return res.status(StatusCodes.NOT_FOUND)
+            .json({
+                error:
+                    "This account doesn't have a token. Use /api/v1/token/apply to apply."
+            });
+    }
+    res.status(StatusCodes.CREATED).json(existing);
 })
 
 

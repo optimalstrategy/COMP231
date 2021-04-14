@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { prefetchSimilarTickets, TicketModel } from "../models/tickets/ticket.model";
-import { UserModel } from "server/models/user/user.model";
+import { UserModel } from "../models/user/user.model";
 
 const router = Router();
 

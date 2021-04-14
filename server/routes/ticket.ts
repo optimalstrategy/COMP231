@@ -5,7 +5,8 @@ import { sendForProcessing } from '../shared/conn';
 import { prefetchSimilarTickets, TicketModel } from "../models/tickets/ticket.model";
 import { ITicketSubmission, ITicketUpdate } from './interfaces';
 import { Types } from 'mongoose';
-import { TokenModel } from 'server/models/tokens/token.model';
+import { TokenModel } from '../models/tokens/token.model';
+import { MIN_TICKET_DESCRIPTION_LENGTH } from '../shared/constants';
 
 const router = Router();
 
@@ -103,6 +104,8 @@ router.post('/submit', IsAuthenticatedWithValidToken, async (req: Request, res: 
     // TODO: Add check for minimum ticket length here.
     if (!payload.description) {
         return res.status(StatusCode.BAD_REQUEST).json({ "error": "Missing the ticket body." });
+    } else if (payload.description.length < MIN_TICKET_DESCRIPTION_LENGTH) {
+        return res.status(StatusCode.BAD_REQUEST).json({ "error": "The ticket description is too short." });
     }
 
     const ticket = await TicketModel.create({
