@@ -81,7 +81,7 @@ router.put('/update/:id', IsAuthenticatedWithValidToken, async (req: Request, re
         "keywords": ticket.keywords,
         "lastUpdated": new Date(Date.now()),
         "status": "processing",
-    });
+    }, { new: true });
 
     if (!updatedTicket) {
         return res.status(StatusCodes.NOT_FOUND).json({

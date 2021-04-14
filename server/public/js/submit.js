@@ -101,6 +101,7 @@ function updateUI(data) {
         const urgency = URGENCY_MAP[t.priority[0]];
 
         html = generateSimilarTicketCard(t, score, urgency)
+        $("#similar").html("");
         $("#similar").append(html);
     }
 
