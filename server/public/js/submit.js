@@ -38,6 +38,7 @@ const THEME_MAP = {
         "fg": "text-white"
     },
 };
+const ALL_CLASSES = "bg-danger bg-warning bg-secondary bg-success text-white text-dark";
 const sleep = m => new Promise(r => setTimeout(r, m))
 
 function generateSimilarTicketCard(ticket, score, urgency) {
@@ -74,9 +75,9 @@ function updateUI(data) {
         const theme = THEME_MAP[urgency];
         const score = data.priority[1].toFixed(4);
 
-        $("#ticket-header").addClass(theme.bg).addClass(theme.fg);
+        $("#ticket-header").removeClass(ALL_CLASSES).addClass(theme.bg).addClass(theme.fg);
         $("#priority")
-            .removeClass("bg-secondary")
+            .removeClass(ALL_CLASSES)
             .addClass(theme.bg)
             .addClass(theme.fg)
             .attr("title", `Score: ${score}`)
