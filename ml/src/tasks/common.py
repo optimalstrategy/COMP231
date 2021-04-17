@@ -25,7 +25,7 @@ CATEGORIES = {
     9: "purchase",
 }
 
-DESCRIPTION_REGEX = re.compile("(\W|\d)+")
+DESCRIPTION_REGEX = re.compile(r"(\W|\d)+")
 
 
 def load_data(path: str = DATA_PATH) -> pd.DataFrame:
@@ -84,6 +84,7 @@ def preprocess_string(
         for gram in tokenizer(clean_input_string(s))
     ]
 
+
 def convert(o: Any):
     """
     A helper that converts numpy types to python types.
@@ -91,6 +92,8 @@ def convert(o: Any):
     :param o: an object to convert
     :return:
     """
-    if isinstance(o, np.int64): return int(o)
-    if isinstance(o, np.float32): return float(o)
+    if isinstance(o, np.int64):
+        return int(o)
+    if isinstance(o, np.float32):
+        return float(o)
     raise TypeError
