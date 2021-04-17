@@ -7,14 +7,14 @@ import strsimpy as sim
 from loguru import logger
 from scipy.spatial import distance
 
-from src.tasks.categories import STEMMER, preprocess_string, load_vectorizer
+from src.tasks.categories import STEMMER, load_vectorizer
 
 
 METRICS = {
     "cosine",
     "euclidean",
 }
-CONFIG = {"n": 5, "threshold": 0.90, "metric": "cosine", "exclude_same": False}
+CONFIG = {"n": 5, "threshold": 0.55, "metric": "cosine", "exclude_same": False}
 EPSILON = 1e-10
 
 
@@ -42,13 +42,11 @@ class TicketDB(object):
             _, self.vectorizer = load_vectorizer(STEMMER)
 
         vectors = self.vectorizer(title, body)
-        self.add_ticket_vectors(ticket_id, vectors)
+        self.add_ticket_vectors(ticket_id, vectors, title, body)
 
     def add_ticket_vectors(self, ticket_id: str, vectors: np.ndarray, headline: str = "", body: str = ""):
         existing = self.db[self.db.ticket_id == ticket_id]
 
-        headline = " ".join(preprocess_string(headline, STEMMER))
-        body = " ".join(preprocess_string(body, STEMMER))
         if len(existing) == 0:
             self.db.loc[len(self.db)] = [ticket_id, vectors, headline, body]
         else:
@@ -114,13 +112,12 @@ class TicketDB(object):
 
         results = []
         for other_id, _, _, body in self.db.values:
-            if other_id == ticket_id: continue
+            if other_id == ticket_id or not body: continue
             other_profile = cosine.get_profile(body)
             try:
-                dist = cosine.similarity_profiles(profile, other_profile)
+                measure = cosine.similarity_profiles(profile, other_profile)
             except ZeroDivisionError:
                 continue
-            measure = max(1, abs(dist)) - abs(dist)
             if measure >= threshold:
                 results.append((other_id, measure))
 

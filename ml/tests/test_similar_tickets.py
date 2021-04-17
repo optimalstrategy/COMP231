@@ -17,9 +17,15 @@ def test_ticket_db():
     assert db.find_similar_tickets("t6") == [
         ("t5", 0.9999999999999999),
         ("t0", 0.9428090415820634),
+        ("t1", 0.8280786712108251),
+        ("t3", 0.6416864263575349),
+        ("t4", 0.6416864263575349),
     ]
     assert db.find_similar_tickets("t6", exclude_same=True) == [
-        ("t0", 0.9428090415820634)
+        ("t0", 0.9428090415820634),
+        ("t1", 0.8280786712108251),
+        ("t3", 0.6416864263575349),
+        ("t4", 0.6416864263575349),
     ]
 
 
@@ -32,10 +38,10 @@ def test_ticket_db_with_real_vectors():
     )
     db.add_ticket(
         "t1",
-        "Security badge lost",
+        "Security Card Went Missing",
         "Hello. I've lost my access card. I'd like to get a new one.",
     )
-    assert db.find_similar_tickets("t0") == [("t1", 0.9419508175798631)]
+    assert db.find_similar_tickets("t0") == [("t1", 0.5761659596980319)]
 
     db.add_ticket("t2", "An unrelated ticket", "Completely unrelated description")
     assert db.find_similar_tickets("t2") == []
