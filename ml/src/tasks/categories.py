@@ -210,20 +210,3 @@ def predict_categories(
 
     decoded = encoder.inverse_transform([c_cls])[0]
     return [(u_cls, u_value), (CATEGORIES[decoded], c_value)]
-
-
-if __name__ == "__main__":
-    assert (
-        predict_categories(
-            "Equipment problem",
-            "Hello, please help me with the following equipment: laptop, phone",
-        )[1][0]
-        == "hardware"
-    )
-    assert (
-        predict_categories(
-            "Security badge lost",
-            "Hello I've lost my security badge. I'd like to get a replacement",
-        )[1][0]
-        == "access card"
-    )

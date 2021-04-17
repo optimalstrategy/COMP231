@@ -78,7 +78,9 @@ def extract_keywords(
             }
 
         if settings is not None and _CACHE[method]["settings"] != settings:
-            logger.debug("[KEYWORDS] Yake settings have been changed, recreating the model...")
+            logger.debug(
+                "[KEYWORDS] Yake settings have been changed, recreating the model..."
+            )
             stored = _CACHE[method]["settings"]
             stored.update(settings)
             _CACHE[method]["model"] = yake.KeywordExtractor(**stored)
