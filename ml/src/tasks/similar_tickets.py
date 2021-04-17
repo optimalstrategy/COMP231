@@ -3,10 +3,11 @@ from typing import Any, Dict, Union, Tuple
 
 import numpy as np
 import pandas as pd
+import strsimpy as sim
 from loguru import logger
 from scipy.spatial import distance
 
-from src.tasks.categories import STEMMER, load_vectorizer
+from src.tasks.categories import STEMMER, preprocess_string, load_vectorizer
 
 
 METRICS = {
@@ -19,7 +20,7 @@ EPSILON = 1e-10
 
 class TicketDB(object):
     def __init__(self):
-        self.db = pd.DataFrame(columns=["ticket_id", "features"])
+        self.db = pd.DataFrame(columns=["ticket_id", "features", "headline", "body"])
         self.config = CONFIG.copy()
         self.vectorizer = None
 
@@ -43,13 +44,15 @@ class TicketDB(object):
         vectors = self.vectorizer(title, body)
         self.add_ticket_vectors(ticket_id, vectors)
 
-    def add_ticket_vectors(self, ticket_id: str, vectors: np.ndarray):
+    def add_ticket_vectors(self, ticket_id: str, vectors: np.ndarray, headline: str = "", body: str = ""):
         existing = self.db[self.db.ticket_id == ticket_id]
 
+        headline = " ".join(preprocess_string(headline, STEMMER))
+        body = " ".join(preprocess_string(body, STEMMER))
         if len(existing) == 0:
-            self.db.loc[len(self.db)] = [ticket_id, vectors]
+            self.db.loc[len(self.db)] = [ticket_id, vectors, headline, body]
         else:
-            self.db.loc[existing] = vectors
+            self.db.loc[existing] = [ticket_id, vectors, headline, body]
 
     def find_similar_tickets(
         self,
@@ -95,11 +98,33 @@ class TicketDB(object):
             ):
                 result.append((ticket, measure))
 
+        if not result:
+            result = self.cosine_fallback(ticket_id, threshold or self.config["threshold"])
+
         logger.info(
             f"[SIMILAR] Found {len(closest)} neighbors, filtered out {len(result)} that are close enough."
         )
 
         return result
+
+    def cosine_fallback(self, ticket_id: str, threshold: float):
+        cosine = sim.cosine.Cosine(3)
+        ticket = self.db[self.db.ticket_id == ticket_id].body.values[0]
+        profile = cosine.get_profile(ticket)
+
+        results = []
+        for other_id, _, _, body in self.db.values:
+            if other_id == ticket_id: continue
+            other_profile = cosine.get_profile(body)
+            try:
+                dist = cosine.similarity_profiles(profile, other_profile)
+            except ZeroDivisionError:
+                continue
+            measure = max(1, abs(dist)) - abs(dist)
+            if measure >= threshold:
+                results.append((other_id, measure))
+
+        return results
 
     def _reshape(self, v: np.ndarray) -> np.ndarray:
         if len(v.shape) == 1:

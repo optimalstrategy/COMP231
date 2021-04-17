@@ -1157,6 +1157,14 @@ python-versions = "*"
 scikit-learn = "*"
 
 [[package]]
+name = "strsimpy"
+version = "0.2.0"
+description = "A library implementing different string similarity and distance measures"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "summa"
 version = "1.2.0"
 description = "A text summarization and keyword extraction package based on TextRank"
@@ -1422,7 +1430,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "61ff68bfa587ab637637ba87c14d000f6e69e73a71c635907ed86101cfa191b2"
+content-hash = "b0fe5472cc0fac0bc6dafb405811487150f44fb952e090b356901d6e46c9df7b"
 
 [metadata.files]
 aio-pika = [
@@ -2235,6 +2243,10 @@ six = [
 ]
 sklearn = [
     {file = "sklearn-0.0.tar.gz", hash = "sha256:e23001573aa194b834122d2b9562459bf5ae494a2d59ca6b8aa22c85a44c0e31"},
+]
+strsimpy = [
+    {file = "strsimpy-0.2.0-py3-none-any.whl", hash = "sha256:5986dc0a8a3f06869594a4736e03b4cde3f5dbaf5c086241301fd122f8e8aca1"},
+    {file = "strsimpy-0.2.0.tar.gz", hash = "sha256:a02fd6eb36130311d4978ddbef0248be19a80a715c3100e6ce8d6faab24c8122"},
 ]
 summa = [
     {file = "summa-1.2.0.tar.gz", hash = "sha256:6eb60e4e3d3859e7d951f36a3515573becf096ca404ae806a2f1e8fa7a53a0fc"},

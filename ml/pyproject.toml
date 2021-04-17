@@ -20,6 +20,7 @@ keybert = "^0.2.0"
 aio-pika = "^6.8.0"
 loguru = "^0.5.3"
 imbalanced-learn = "^0.8.0"
+strsimpy = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"

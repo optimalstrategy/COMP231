@@ -33,9 +33,9 @@ def test_ticket_db_with_real_vectors():
     db.add_ticket(
         "t1",
         "Security badge lost",
-        "Hello I've lost my security badge. I'd like to get a replacement.",
+        "Hello. I've lost my access card. I'd like to get a new one.",
     )
-    assert db.find_similar_tickets("t0") == [("t1", 1.0)]
+    assert db.find_similar_tickets("t0") == [("t1", 0.9419508175798631)]
 
     db.add_ticket("t2", "An unrelated ticket", "Completely unrelated description")
     assert db.find_similar_tickets("t2") == []
