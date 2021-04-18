@@ -4,12 +4,14 @@ import { ITokenDocument } from "../tokens/token.types";
 import { IUser } from "./user.types";
 
 
+/// The possible user roles and their names.
 export const UserRoles = Object.freeze({
     TICKET_CREATOR: 'Ticket Creator',
     TICKET_PROCESSOR: 'Ticket Processor',
     HL_TECH_SUPPORT: 'High Level Tech Support',
     DEVELOPER: "Help Desk Software Developer",
 });
+/// All possible ser roles as a list.
 export const USER_ROLES = [
     UserRoles.TICKET_CREATOR,
     UserRoles.TICKET_PROCESSOR,

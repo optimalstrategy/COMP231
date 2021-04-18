@@ -1,5 +1,7 @@
+/// The registration API url.
 const API_URL = "/api/v1/users/register";
 
+/// Highlights the given element if the isOk value is true.
 function highlight(e, isOk) {
     if (isOk) {
         e.addClass("border-success");
@@ -11,12 +13,12 @@ function highlight(e, isOk) {
     }
 }
 
+/// Validates the given object, highlighting the valid and invalid fields.
 function validate(json) {
     for (const field of Object.keys(json)) {
         const e = $(`#${field}`);
         highlight(e, e.get(0).checkValidity());
     }
-
 
     const e = $("#confirmation");
     if (json.password !== json.confirmation || !json.confirmation) {
@@ -27,6 +29,8 @@ function validate(json) {
     }
 }
 
+/// Performs a sign up request using the given HTML form, validating it in the process.
+/// On success, redirects the user to the submit page.
 async function signup(form) {
     const json = {};
     form.serializeArray().forEach((field) => {
@@ -62,6 +66,7 @@ async function signup(form) {
     }
 }
 
+/// Switches the submit button to the given state (although that isn't really "toggling").
 function toggleSubmitButton(toggle) {
     $("#btnSubmit").prop('disabled', toggle === 'off');
 }

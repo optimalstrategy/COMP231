@@ -10,6 +10,7 @@ import { MIN_TICKET_DESCRIPTION_LENGTH } from '../shared/constants';
 
 const router = Router();
 
+/// Only accepts the requests that come from authenticated users with valid tokens.
 async function IsAuthenticatedWithValidToken(req: Request, res: Response, next: NextFunction) {
     if (!req.isAuthenticated()) {
         return res.status(StatusCodes.UNAUTHORIZED).json({

@@ -15,11 +15,17 @@ except ImportError:
     from .propagating_thread import PropagatingThread, Lock
 
 
+#: The AMQP connection url to use
 AMQP_URL = "amqp://guest:guest@localhost/"
+#: The name of the AMQP exchange used for communication
 AMQP_EXCHANGE_NAME = "comp231"
+#: The name of the queue that contains the tasks to do
 QUEUE_NAME = "comp231_ml_tasks"
+#: The name of the queue to reply to
 REPLY_TO_QUEUE = "comp231_rpc_reply_to"
 
+#: The maximum number of ML processes that can be spawned in parallel
+#: (currently isn't every useful as threads block the event loop).
 MAX_ML_PROCESSES = 4
 ML_PROC_SEMAPHORE = Semaphore(MAX_ML_PROCESSES)
 DB = similar_tickets.TicketDB()
@@ -27,6 +33,13 @@ DB_LOCK = Lock()
 
 
 async def on_message(exchange: Exchange, message: IncomingMessage):
+    """
+    Handles an incoming ticket processing message. Marks the message as processed
+    even if the processing fails (the user must re-request the processing of the same ticket in this case).
+
+    :param exchange: the exchange to reply to
+    :param message: the message to handle
+    """
     with message.process():
         context = {}
         try:
@@ -60,6 +73,14 @@ async def on_message(exchange: Exchange, message: IncomingMessage):
 async def process_message(
     exchange: Exchange, message: IncomingMessage, context: Dict[str, Any]
 ):
+    """
+    Processes a ticket processing request received from the queue.
+
+    :param exchange: The exchange to reply to.
+    :param message:  The received message containing the ticket information.
+    :param context: The context that well be sent to the user if an error occurs.
+    :return:
+    """
     logger.info(" [x] Received a new ticket %r" % message)
     logger.info(" [x] Ticket description is: %r" % message.body)
 
@@ -175,6 +196,11 @@ async def process_message(
 
 
 async def main(loop: asyncio.AbstractEventLoop) -> None:
+    """
+    Listens and handles the incoming processing.
+
+    :param loop: the asyncio even loop to run on
+    """
     connection = await connect("amqp://guest:guest@localhost/", loop=loop)
 
     channel = await connection.channel()

@@ -4,6 +4,7 @@ $('.move-up span').click(function () {
     }, 1000);
 });
 
+/// Shows the error modal with the given title and message.
 function showError(title, message) {
     $("#error-title").text(title);
     $("#error-message").text(message);

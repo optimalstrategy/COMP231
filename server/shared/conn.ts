@@ -60,6 +60,7 @@ async function _sendForProcessing(ticket: ITicketDocument, settings?: ISubmissio
     }, { replyTo: REPLY_TO_QUEUE }));
 }
 
+/// A stub used while testing.
 async function _sendForProcessingStub(ticket: ITicketDocument, settings?: ISubmissionSettings) {
     Logger.debug("[RPC] Creating a fake ticket during testing.");
     ticket.status = "processed";

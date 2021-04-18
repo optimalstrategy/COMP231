@@ -50,7 +50,7 @@ router.get('/developers', async (_req: Request, res: Response, _: NextFunction) 
     return res.json({ "developers": ["George", "Hung", "Ibrahim", "Dmitriy", "Faraz", "Prabhnoor"] }).status(200);
 });
 
-
+/// [GET] Serves the registration page.
 router.get('/register', async (req: Request, res: Response, _: NextFunction) => {
     let user = null;
     if (req.isAuthenticated()) {

@@ -7,13 +7,20 @@ from typing import Callable, List, Any
 
 from sklearn.feature_extraction.text import CountVectorizer
 
+#: The path to the dataset
 DATA_PATH = "../data/all_tickets.csv"
 
+#: The random state to use for predictions if randomness is involved
 RANDOM_STATE = 0
 
+#: The name of the priority column
 PRIORITY_COLUMN = "urgency"
+#: The minimum number of tickets in a category
+#: (categories with  a lesser number of tickets will be excluded)
 MIN_CATEGORY_COUNT = 150
+#: The possible ticket types
 TICKET_TYPES = {0: "incident", 1: "request"}
+#: The the possible ticket categories
 CATEGORIES = {
     0: "lacking information",
     6: "access",
@@ -25,6 +32,7 @@ CATEGORIES = {
     9: "purchase",
 }
 
+#: The regex used to clean ticket descriptions
 DESCRIPTION_REGEX = re.compile(r"(\W|\d)+")
 
 

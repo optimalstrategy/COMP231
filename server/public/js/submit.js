@@ -1,8 +1,15 @@
+/// The API endpoint for submitting tickets.
 const API_URL = "/api/v1/tickets/submit";
+/// The API endpoint for retrieving ticket's information.
 const POLL_URL = "/api/v1/tickets/info";
+/// The frontend URL of the ticket info page.
 const FRONT_TICKET_URL = "/ticket";
+/// The number of milliseconds to pause before sending requests to the server during the polling phase.
 const POLLING_INTERVAL = 250; // ms
+/// The maximum number of characters that can be displayed in a similar ticket card.
+/// ANything after this will be replaced with `...`.
 const MAX_DESC_LENGTH_IN_TICKET_CARD = 350;
+/// The settings to use when requesting predictions from the server.
 let SETTINGS = {
     keywords: {
         method: "bert",
@@ -14,12 +21,14 @@ let SETTINGS = {
         }
     }
 };
+/// The map from (priority class) to (priority name).
 const URGENCY_MAP = Object.freeze({
     "3": "Low",
     "2": "Medium",
     "1": "High",
     "0": "Critical"
 });
+/// The map from (priority name) to (priority theme).
 const THEME_MAP = {
     "Critical": {
         "bg": "bg-danger",
@@ -38,9 +47,12 @@ const THEME_MAP = {
         "fg": "text-white"
     },
 };
+/// The names of all classes that may appear within a theme.
 const ALL_CLASSES = "bg-danger bg-warning bg-secondary bg-success text-white text-dark";
+/// A function that pauses the async function it is called in for the given number of milliseconds.
 const sleep = m => new Promise(r => setTimeout(r, m))
 
+/// Generate a similar ticket card for the given ticket.
 function generateSimilarTicketCard(ticket, score, urgency) {
     const theme = THEME_MAP[urgency];
     const title = ticket.headline || "(Missing Title)";
@@ -64,6 +76,7 @@ function generateSimilarTicketCard(ticket, score, urgency) {
 </div>`;
 }
 
+/// Updates the UI using the given ticket data.
 function updateUI(data) {
     toggleSpinner('off');
 
@@ -258,6 +271,8 @@ async function poll(id) {
     }
 }
 
+/// Submits the form to the server and keeps polling it until it receives a result.
+/// Automatically updates the UI if the request succeeds.
 async function submit(form) {
     const json = {};
     form.serializeArray().forEach((field) => {
@@ -291,10 +306,12 @@ async function submit(form) {
     }
 }
 
+/// "Toggles" the submit button
 function toggleSubmitButton(toggle) {
     $("#btnSubmit").prop('disabled', toggle === 'off');
 }
 
+/// "Toggles" the spinner shown while making requests to the server.
 function toggleSpinner(toggle) {
     const spinner = $("#spinner");
     const ticket = $("#ticket-view");
@@ -310,6 +327,7 @@ function toggleSpinner(toggle) {
     }
 }
 
+/// Displays a bootstrap alert talking about successful registration for 10 seconds, then clears the navigation history.
 function onSignupRedirect() {
     // Display an alert stating that the registration was successful.
     $("main").prepend(`<div class="alert alert-success alert-dismissible fade show" role="alert">

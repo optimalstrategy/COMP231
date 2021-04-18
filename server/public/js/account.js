@@ -1,6 +1,8 @@
+/// The token application API url.
 const API_URL = "/api/v1/token/apply";
 
 
+/// Makes a request to the server to apply for a new token.
 async function applyForToken() {
     const _result = await $.ajax({
         url: API_URL,
@@ -22,10 +24,13 @@ async function applyForToken() {
     });
 }
 
+/// Toggles the state of the given button.
 function toggleButton(btn, toggle) {
     $(btn).prop('disabled', toggle === 'off');
 }
 
+/// Makes a request when the given button is clicked, turning it off.
+/// Enables the button after the request completes.
 function makeRequestOnClick(btn, f) {
     toggleButton(btn, 'off');
     f().then(
@@ -34,6 +39,7 @@ function makeRequestOnClick(btn, f) {
     );
 }
 
+/// Copies the given text to the clipboard.
 async function copyToClipboard(text) {
     await navigator.clipboard.writeText(text);
     $(".alert").removeClass("visually-hidden");

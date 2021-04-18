@@ -19,12 +19,22 @@ EPSILON = 1e-10
 
 
 class TicketDB(object):
+    """
+    A database that stores the recently processed similar tickets in memory.
+    Can perform ticket similarity search queries.
+    """
+
     def __init__(self):
         self.db = pd.DataFrame(columns=["ticket_id", "features", "headline", "body"])
         self.config = CONFIG.copy()
         self.vectorizer = None
 
     def update_config(self, new_config: Dict[str, Any]):
+        """
+        Updates the config used by the database to the given :param:`new_config`.
+
+        :param new_config: the new config to use.
+        """
         for key in filter(lambda k: k in self.config, new_config):
             value = new_config[key]
             if key == "metric" and value in METRICS:
@@ -37,6 +47,13 @@ class TicketDB(object):
                 self.config[key] = bool(value)
 
     def add_ticket(self, ticket_id: str, title: str, body: str):
+        """
+        Adds a new ticket to the database, computing its vectors.
+
+        :param ticket_id: the id of the ticket to add
+        :param title: the title of the ticket to add
+        :param body: the body of the ticket to add
+        """
         if self.vectorizer is None:
             logger.info("[SIMILAR] Vectorizer is not in cache, loading ...")
             _, self.vectorizer = load_vectorizer(STEMMER)
@@ -45,6 +62,15 @@ class TicketDB(object):
         self.add_ticket_vectors(ticket_id, vectors, title, body)
 
     def add_ticket_vectors(self, ticket_id: str, vectors: np.ndarray, headline: str = "", body: str = ""):
+        """
+        Adds the ticket using the user-supplied vectors.
+
+        :param ticket_id: the id of the ticket to add
+        :param vectors: the embedding vectors to associate with the user.
+        :param headline: the ticket headline
+        :param body: the ticket body
+        :return:
+        """
         existing = self.db[self.db.ticket_id == ticket_id]
 
         if len(existing) == 0:
@@ -60,6 +86,17 @@ class TicketDB(object):
         threshold: float = None,
         exclude_same: bool = None,
     ):
+        """
+        Finds the tickets similar to the given embedding or ticket id.
+
+        :param vectors_or_id: either a ticket id or a tuple of (ticket_id, vectors)
+        :param n: the maximum number of similar tickets to return
+        :param metric: the metric to use for similarity calculation
+        :param threshold: the similarity threshold for ticket selection
+        :param exclude_same: whether to exclude the tickets that _too_ similar (the distance between them is < EPSILON)
+
+        :return: a list of tuples [(ticket_id, similarity)]
+        """
         if type(vectors_or_id) is str:
             ticket_id = vectors_or_id
             vectors = (
@@ -106,6 +143,13 @@ class TicketDB(object):
         return result
 
     def cosine_fallback(self, ticket_id: str, threshold: float):
+        """
+        A fallback implementation that uses a simpler ticket embedding algorithm that works by computing 3-grams.
+
+        :param ticket_id: the id of the target ticket
+        :param threshold: the similarity threshold
+        :return: a list of tuples [(ticket_id, similarity)]
+        """
         cosine = sim.cosine.Cosine(3)
         ticket = self.db[self.db.ticket_id == ticket_id].body.values[0]
         profile = cosine.get_profile(ticket)
@@ -135,12 +179,27 @@ class TicketDB(object):
 
 @contextlib.contextmanager
 def dummy():
+    """
+    A dummy context manager that does nothing. Used as a stub if a lock isn't passed.
+    """
     yield
 
 
 def add_predict(
     db: TicketDB, ticket_id: str, title: str, body: str, settings=None, lock=None
 ):
+    """
+    Performs a similarity prediction on the given ticket, locking the call if necessary
+    (since the database isn't thread-safe by itself).
+
+    :param db: the ticket db to use for predictions
+    :param ticket_id: the if id of the ticket
+    :param title: the title of the ticket
+    :param body: the body of the ticket
+    :param settings: the settings to use when computing similarity
+    :param lock: the lock to use if thread-safety is desired
+    :return: a list of tuples [(ticket_id, similarity)]
+    """
     if not lock:
         lock = dummy
 
